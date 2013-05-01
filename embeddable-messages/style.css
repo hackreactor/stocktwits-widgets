@@ -1,0 +1,88 @@
+/*width needs to be responsive*/
+.modal-title {
+  height: 30px;
+  width: 498px;
+  border: 1px solid gray;
+  border-bottom: none;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.embedded-container {
+  display: block;
+  padding: 8px 8px 0 8px;
+  width: 482px;
+  border: 1px solid gray;
+  font: 12px/18px Arial,Tahoma,sans-serif;
+  position: relative;
+  min-height: 48px;
+}
+
+.header {
+
+}
+
+.avatar {
+  position: relative;
+  float: left;
+  top: 0;
+  width: 60px;
+  height: 60px;
+  background-color: gray;
+}
+
+.username {
+  color: #000;
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.2em;
+  padding-left: 8px;
+}
+
+.dateline {
+  float: right;
+  width: 58px;
+  height: 18px;
+  background-color: gray;
+}
+
+.entry-content {
+
+}
+
+.entry-title {
+
+}
+
+.dateline {
+
+}
+
+.media {
+
+}
+
+.footer {
+
+}
+
+.stats {
+
+}
+
+.stats-comments {
+
+}
+
+.like-action {
+
+}
+
+.share-action {
+
+}
+
+.reply-actions {
+
+}
