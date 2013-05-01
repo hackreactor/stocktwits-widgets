@@ -36,15 +36,13 @@
   float: left;
   font-size: 14px;
   font-weight: bold;
-  line-height: 1.2em;
   padding-left: 8px;
 }
 
 .dateline {
   float: right;
-  width: 58px;
+  /*width: 58px;*/
   height: 18px;
-  background-color: gray;
 }
 
 .entry-content {
