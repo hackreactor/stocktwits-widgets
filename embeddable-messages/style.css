@@ -1,5 +1,5 @@
 /*width needs to be responsive*/
-.modal-title {
+.embedded-modal-title {
   height: 30px;
   width: 498px;
   border: 1px solid gray;
@@ -18,11 +18,11 @@
   min-height: 48px;
 }
 
-.header {
+.embedded-header {
 
 }
 
-.avatar {
+.embedded-avatar {
   position: relative;
   float: left;
   top: 0;
@@ -31,7 +31,7 @@
   background-color: gray;
 }
 
-.username {
+.embedded-username {
   color: #000;
   float: left;
   font-size: 14px;
@@ -39,29 +39,28 @@
   padding-left: 8px;
 }
 
-.dateline {
+.embedded-dateline {
   float: right;
-  /*width: 58px;*/
   height: 18px;
 }
 
-.entry-content {
+.embedded-entry-content {
 
 }
 
-.entry-title {
+.embedded-entry-title {
 
 }
 
-.dateline {
+.embedded-dateline {
 
 }
 
-.media {
+.embedded-media {
 
 }
 
-.footer {
+.embedded-footer {
 
 }
 
