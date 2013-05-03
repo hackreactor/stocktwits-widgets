@@ -14,7 +14,7 @@ var JSONP = function(url, callback) {
   window[GLOBALCALLBACKNAME] = function(data){
     callback(data);
     //clear timeout
-    };
+  };
   // Insert a script tag into the DOM with the URL + callback=GLOBALCALLBACKNAME
   // document.createElement('script')
 
