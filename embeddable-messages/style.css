@@ -1,0 +1,94 @@
+body {
+  font: 12px/18px Arial,Tahoma,sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 8px 0 0 0;
+  clear: both;
+  overflow: hidden;
+}
+
+li {
+  float: left;
+  padding-left: 5px;
+}
+
+a {
+  text-decoration: none;
+}
+
+button.embedded_st-cancel-button {
+  height: 41px;
+  float: right;
+  clear: both;
+  margin-top: -11px;
+  margin-right: -1px;
+  border: 0;
+  background: none;
+  border-left: solid black 1px;
+  padding: 10px;
+}
+
+.embedded_st-modal-content {
+  height: 30px;
+  width: 498px;
+  border: 1px solid gray;
+  border-bottom: none;
+  padding-top: 10px;
+  text-align: center;
+  background-color: rgb(137, 19, 10);
+  font-size: 16px;
+  color: white;
+}
+
+.embedded_st-container {
+  padding: 8px 8px 0 8px;
+  width: 482px;
+  border: 1px solid gray;
+  overflow: hidden;
+}
+
+.textareaContainer {
+  padding: 0 8px 16px 0;
+}
+
+textarea.embedded_st-code {
+  width: 100%;
+  display: block;
+  resize: none;
+}
+
+.embedded_st-avatar {
+  position: relative;
+  float: left;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.embedded_st-username {
+  color: #000;
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 8px;
+}
+
+.embedded_st-dateline {
+  float: right;
+  height: 18px;
+}
+
+.embedded_st-media {
+  margin-top: 25px;
+  height: 300px;
+  width: 100%;
+  background-color: gray;
+}
+
+.embedded_st-actions {
+  padding-bottom: 10px;
+}
