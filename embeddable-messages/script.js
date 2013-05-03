@@ -37,9 +37,8 @@ function showTwit(messageId) {
   // Set up document inside iframe, css-document.write
   // WARNING: inserting style tags does not work for IE
   // Set iframe's body element's HTML to your template
-  // After the response is recieved, you need to query the iframe (using getElementByTagName), find the places where info goes, and use innerText
-
-  var template = '<div class="_ST_embed_username"></div>';
+  // After the response is recieved, you need to query the iframe (using 
+  // getElementByTagName), find the places where info goes, and use innerText
 
   JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function(messageInfo){
     var date = new Date(messageInfo.message.created_at);
@@ -58,7 +57,8 @@ function showTwit(messageId) {
 
     //inner text cross browser to avoid XSS .innerText
     $('.embedded-username').html(messageInfo.message.user.username);
-    $('.embedded-dateline').html(months[date.getMonth()] + ' ' + date.getDate() + ' at ' + hours + ':' + date.getMinutes() + ' ' + amOrPm);
+    $('.embedded-dateline').html(months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
+      + hours + ':' + date.getMinutes() + ' ' + amOrPm);
     $('.embedded-entry-title').html(messageInfo.message.body);
   });
 }
