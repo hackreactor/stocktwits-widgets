@@ -16,16 +16,14 @@ var JSONP = function(url, callback) {
     //clear timeout
     };
   // Insert a script tag into the DOM with the URL + callback=GLOBALCALLBACKNAME
-    // document.createElement('script')
+  // document.createElement('script')
 
   require(url + '?callback=' + GLOBALCALLBACKNAME);
-
   // append to head
-
   // Optional: Set a timeout for X seconds to "abort" the request
-    // var myTimeout = setTimeout(func, 1000);
+  // var myTimeout = setTimeout(func, 1000);
   // Clean the timeout (if you did that)
-    // clearTimeout(myTimeout);
+  // clearTimeout(myTimeout);
 };
 
 
@@ -44,7 +42,6 @@ function showTwit(messageId) {
   var template = '<div class="_ST_embed_username"></div>';
 
   JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function(messageInfo){
-    console.log(messageInfo)
     var date = new Date(messageInfo.message.created_at);
     var amOrPm = date.getHours() > 11 ? 'PM' : 'AM';
     var hours = date.getHours();
