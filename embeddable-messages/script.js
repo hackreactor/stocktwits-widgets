@@ -14,6 +14,7 @@ var JSONP = function(url, callback) {
   window[GLOBALCALLBACKNAME] = function(data){
     callback(data);
     //clear timeout
+    delete window[GLOBALCALLBACKNAME];
   };
   // Insert a script tag into the DOM with the URL + callback=GLOBALCALLBACKNAME
   // document.createElement('script')
@@ -28,7 +29,7 @@ var JSONP = function(url, callback) {
 
 
 function showTwit(messageId) { 
-  var messageId = 13337309; // delete when passing in from HTML
+  var messageId = 13357309; // delete when passing in from HTML
   var frame = document.createElement("iframe");
 
   // Find the last element in the DOM
@@ -46,7 +47,7 @@ function showTwit(messageId) {
     var amOrPm = date.getHours() > 11 ? 'PM' : 'AM';
     var hours = date.getHours();
     if(amOrPm == 'AM'){
-      if(hours == 0) {
+      if(hours === 0) {
         hours = 12;
       }
     } else {
@@ -57,11 +58,11 @@ function showTwit(messageId) {
         'July', 'August', 'September', 'October', 'November', 'December'];
 
     //inner text cross browser to avoid XSS .innerText
-    $('.embedded-username').html(messageInfo.message.user.username);
-    $('.embedded-dateline').html(months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
+    $('.embedded_st-username').html(messageInfo.message.user.username);
+    $('.embedded_st-dateline').html(months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
       + hours + ':' + date.getMinutes() + ' ' + amOrPm);
-    $('.embedded-entry-title').html(messageInfo.message.body);
-    $('.embedded-avatar').html('<img src="' + messageInfo.message.user.avatar_url +'"/>');
+    $('.embedded_st-entry-title').html(messageInfo.message.body);
+    $('.embedded_st-avatar').html('<img src="' + messageInfo.message.user.avatar_url +'"/>');
   });
 }
 // Expose under namespace
