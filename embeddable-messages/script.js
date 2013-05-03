@@ -41,6 +41,7 @@ function showTwit(messageId) {
   // getElementByTagName), find the places where info goes, and use innerText
 
   JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function(messageInfo){
+    console.log(messageInfo.message)
     var date = new Date(messageInfo.message.created_at);
     var amOrPm = date.getHours() > 11 ? 'PM' : 'AM';
     var hours = date.getHours();
@@ -60,6 +61,7 @@ function showTwit(messageId) {
     $('.embedded-dateline').html(months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
       + hours + ':' + date.getMinutes() + ' ' + amOrPm);
     $('.embedded-entry-title').html(messageInfo.message.body);
+    $('.embedded-avatar').html('<img src="' + messageInfo.message.user.avatar_url +'"/>');
   });
 }
 // Expose under namespace
