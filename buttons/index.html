@@ -94,28 +94,48 @@
   </style>
   <!-- StockTwits Button used to render -->
   <span class="stocktwits-btn" id="stocktwits-btn">
-    <a class="st-btn" id="st-btn" href="http://www.stocktwits.com/" target="_blank">
+    <a class="st-btn" id="st-btn" href="https://stocktwits.com/widgets/share" target="_blank">
       <span class="st-icon"></span>
-      <span class="st-text" id="st-text">Visit StockTwits</span>
+      <span class="st-text" id="st-text">Share</span>
     </a>
     <a class="st-count" id="st-count" href="#" target="_blank"></a>
   </span>
   <!-- Inline script tags to minimise HTTP requests -->
   <script>
+    var stBtn     = document.getElementById('st-btn'),
+        stTxt     = document.getElementById('st-text'),
+        innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
+
+    var addEvent = function (el, event, fn) {
+      if (el.addEventListener) {
+        el.addEventListener(event, fn, false);
+      } else if (el.attachEvent) {
+        el.attachEvent('on' + event, fn);
+      }
+    };
+    // https://stocktwits.com/widgets/share?body=StockTwits%20for%20Developers%20http%3A%2F%2Fstocktwits.com%2Fdevelopers%2Fdocs%2Fshare-button
     switch (params.type) {
       case 'follow':
-        document.getElementById('st-btn').href = '//stocktwits.com/' + params.user;
-        document.getElementById('st-text').textContent = 'Follow @' + params.user;
+        stBtn.href = '//stocktwits.com/' + encodeURI(params.user);
+        stTxt[innerText] = 'Follow @' + params.user;
         break;
       case 'mention':
-        document.getElementById('st-btn').href = '//stocktwits.com/symbol' + params.cashtag;
-        document.getElementById('st-text').textContent = 'Mention $' + params.cashtag.toUpperCase();
+        stBtn.href += '?body=' + encodeURIComponent('$' + params.cashtag);
+        stTxt[innerText] = 'Mention $' + params.cashtag.toUpperCase();
         break;
       case 'message':
-        document.getElementById('st-btn').href = '//stocktwits.com/' + params.user;
-        document.getElementById('st-text').textContent = 'Message @' + params.user;
+        stBtn.href += '?body=' + encodeURIComponent('d ' + params.user);
+        stTxt[innerText] = 'Message @' + params.user;
         break;
     }
+
+    addEvent(stBtn, 'click', function (e) {
+      var width  = 500,
+          height = 300,
+          left   = (window.screen.availWidth - width) / 2;
+      e.preventDefault();
+      window.open(this.href, '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
+    }, false);
   </script>
 </body>
 </html>
