@@ -94,16 +94,28 @@
   </style>
   <!-- StockTwits Button used to render -->
   <span class="stocktwits-btn" id="stocktwits-btn">
-    <a class="st-btn" id="st-btn" href="#" target="_blank">
+    <a class="st-btn" id="st-btn" href="http://www.stocktwits.com/" target="_blank">
       <span class="st-icon"></span>
-      <span class="st-text" id="st-text">Follow</span>
+      <span class="st-text" id="st-text">Visit StockTwits</span>
     </a>
     <a class="st-count" id="st-count" href="#" target="_blank"></a>
   </span>
   <!-- Inline script tags to minimise HTTP requests -->
   <script>
-    document.getElementById('st-btn').href = '//stocktwits.com/' + params.user;
-    document.getElementById('st-text').textContent = 'Follow @' + params.user;
+    switch (params.type) {
+      case 'follow':
+        document.getElementById('st-btn').href = '//stocktwits.com/' + params.user;
+        document.getElementById('st-text').textContent = 'Follow @' + params.user;
+        break;
+      case 'mention':
+        document.getElementById('st-btn').href = '//stocktwits.com/symbol' + params.cashtag;
+        document.getElementById('st-text').textContent = 'Mention $' + params.cashtag.toUpperCase();
+        break;
+      case 'message':
+        document.getElementById('st-btn').href = '//stocktwits.com/' + params.user;
+        document.getElementById('st-text').textContent = 'Message @' + params.user;
+        break;
+    }
   </script>
 </body>
 </html>
