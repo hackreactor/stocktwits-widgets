@@ -3,39 +3,46 @@
   <head>
     <title>Embeddable Buttons</title>
     <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="embedded_st-modal-content">
+      <span class="embedded_st-modal-title">Embed Twit</span>
+      <button type="button" class="embedded_st-cancel-button">X</button>
+    </div>
+    <div class="embedded_st-container">
+      <p>Add this Twit to your website by copying the code below.</p>
+      <div class="textareaContainer">
+        <textarea class="embedded_st-code"></textarea>
+      </div>
+    <div class="embedded_st-header">
+      <div class="embedded_st-dateline">May. 1 at 2:35 PM</div>
+      <div class="embedded_st-avatar"></div>
+      <div class="embedded_st-username">Alex Paley</div>
+    </div>
+    <div class="embedded_st-entry-content">
+      <p class="embedded_st-entry-title">Stock Update: MSFT & Intel: Sexiest companies to work for.</p>
+      <div class="embedded_st-media"></div>
+    </div>
+    <div class="embedded_st-footer">
+      <span class="embedded_st-stats">
+        <span class="embedded_st-stats-comments"></span>
+      </span>
+      <ul class="embedded_st-actions">
+        <li>
+          <a href="#" class="embedded_st-like-action">Like</a>
+        </li>
+        <li>
+          <a href="#" class="embedded_st-share-action">Share</a>
+        </li>
+        <li>
+          <a href="#" class="embedded_st-reply-action">Reply</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
     <script src="script.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://localhost:8000/script.js"></script><script>_ST.showTwit(2384902834);</script>
-  </head>
-  <body>
-    <div class="embedded-modal-title">Embed Twit</div>
-    <div class="embedded-container">
-      <p>Add this Tweet to your website by copying the code below.</p>
-      <div class="embedded-header">
-        <div class="embedded-avatar"></div>
-        <div class="embedded-username">Alex Paley</div>
-        <div class="embedded-dateline">May. 1 at 2:35 PM</div>
-      </div>
-      <div class="embedded-entry-content">
-        <p class="embedded-entry-title"></p>
-        <div class="media"></div>
-      </div>
-      <div class="embedded-footer">
-        <span class="embedded-stats">
-          <span class="embedded-stats-comments"></span>
-        </span>
-        <ul class="embedded-actions">
-          <li>
-            <a href="#" class="embedded-like-action"></a>
-          </li>
-          <li>
-            <a href="#" class="embedded-share-action"></a>
-          </li>
-          <li>
-            <a href="#" class="embedded-reply-action"></a>
-          </li>
-        </ul>
-      </div>
-    </div>
   </body>
 </html>
