@@ -14,6 +14,7 @@ var JSONP = function(url, callback) {
   window[GLOBALCALLBACKNAME] = function(data){
     callback(data);
     //clear timeout
+    delete window[GLOBALCALLBACKNAME];
   };
   // Insert a script tag into the DOM with the URL + callback=GLOBALCALLBACKNAME
   // document.createElement('script')
@@ -46,7 +47,7 @@ function showTwit(messageId) {
     var amOrPm = date.getHours() > 11 ? 'PM' : 'AM';
     var hours = date.getHours();
     if(amOrPm == 'AM'){
-      if(hours == 0) {
+      if(hours === 0) {
         hours = 12;
       }
     } else {
