@@ -5,9 +5,15 @@
     <title>StockTwits Demo Widgets</title>
   </head>
   <body>
-  	<iframe src="buttons/index.html" allowtransparency="true" frameborder="0" scrolling="0" width="180" height="20"></iframe>
-    <iframe src="buttons/index.html?type=follow&amp;user=blakeembrey" allowtransparency="true" frameborder="0" scrolling="0" width="180" height="20"></iframe>
-    <iframe src="buttons/index.html?type=mention&amp;cashtag=aapl" allowtransparency="true" frameborder="0" scrolling="0" width="180" height="20"></iframe>
-    <iframe src="buttons/index.html?type=message&amp;user=blakeembrey" allowtransparency="true" frameborder="0" scrolling="0" width="180" height="20"></iframe>
+    <!-- Share page button -->
+    <a href="https://stocktwits.com/widgets/share" class="stocktwits-share-button">Share</a>
+    <!-- Follow button -->
+    <a href="https://stocktwits.com/widgets/share" class="stocktwits-share-button" data-follow="blakeembrey">Share</a>
+    <!-- Cashtag -->
+    <a href="https://stocktwits.com/widgets/share?body=$AAPL" class="stocktwits-share-button" data-cashtag="AAPL">Share $AAPL</a>
+    <!-- Mention -->
+    <a href="https://stocktwits.com/widgets/share?body=@blakeembrey" class="stocktwits-share-button" data-mention="blakeembrey">Mention @blakeembrey</a>
+
+    <script>(function(d){var b=d.getElementsByTagName('body')[0],s=d.createElement('script');s.src=/*'//example.com/script.js'*/'buttons/script.js';b.appendChild(s);})(document);</script>
   </body>
 </html>
