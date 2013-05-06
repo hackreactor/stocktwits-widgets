@@ -1,6 +1,20 @@
-var _ST = _ST || {};
+var messageID = parseInt(document.getElementById('stocktwit-twit').className);
+var html = '<iframe class="stocktwit-twit-rendered" scrolling="no" frameborder="0" allowtransparency="true"'
+          + ' style="display: block; border-style: solid; border-width: 1px; border-color: rgb(238, 238, 238) '
+          + 'rgb(221, 221, 221) rgb(187, 187, 187); max-width: 99%; min-width: 220px; padding: 0px; border-top-left-radius: '
+          + '5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; margin: 10px '
+          + '0px; box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 3px;" title="Embedded Tweet" width="500" height="186"></iframe>'
 
-(function() {
+          + '<div class="embedded_st-header"><div class="embedded_st-dateline"></div>'
+          + '<div class="embedded_st-avatar"></div><div class="embedded_st-username"></div>'
+          + '</div><div class="embedded_st-entry-content"><p class="embedded_st-entry-title"></p>'
+          + '</div><div class="embedded_st-footer"><span class="embedded_st-stats">'
+          + '<span class="embedded_st-stats-comments"></span></span><ul class="embedded_st-actions">'
+          + '<li><a href="#" class="embedded_st-like-action">Like</a></li><li>'
+          + '<a href="#" class="embedded_st-share-action">Share</a></li><li>'
+          + '<a href="#" class="embedded_st-reply-action">Reply</a></li></ul></div>'
+          
+document.body.innerHTML = html;
 
 function require(src) {
   var doc = document.documentElement;
@@ -28,8 +42,8 @@ var JSONP = function(url, callback) {
 };
 
 
-function showTwit(messageId) { 
-  var messageId = 13357309; // delete when passing in from HTML
+
+  function showTwit(messageId) { 
   var frame = document.createElement("iframe");
 
   // Find the last element in the DOM
@@ -64,7 +78,5 @@ function showTwit(messageId) {
     $('.embedded_st-avatar').html('<img src="' + messageInfo.message.user.avatar_url +'"/>');
   });
 }
-// Expose under namespace
-_ST.showTwit = showTwit;
 
-}()); 
+showTwit(messageID);

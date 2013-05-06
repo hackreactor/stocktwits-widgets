@@ -1,52 +1,133 @@
 <!DOCTYPE html>
 <html> 
   <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
     <style>
-      #overlay {
-        visibility: hidden;
-        position: absolute;
-        left: 0;
+      .modalDialog {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
         top: 0;
-        width:100%;
-        height:100%;
-        text-align:center;
-        z-index: 1000;
-        background-color: rgba(0,0,0,0.7);
-       }
-      #overlay div {
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        opacity:0;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        pointer-events: none;
+      }
+      .modalDialog:target {
+        opacity:1;
+        pointer-events: auto;
+      }
+      .modalDialog > div {
+        width: 500px;
         position: relative;
-        width:300px;
-        margin: 100px auto;
-        background-color: #fff;
-        border:1px solid #000;
-        padding:15px;
-        text-align:center;
+        margin: 10% auto;
+        padding: 5px 20px 13px 20px;
+        border-radius: 10px;
+        background: #fff;
+        background: -moz-linear-gradient(#fff, #999);
+        background: -webkit-linear-gradient(#fff, #999);
+        background: -o-linear-gradient(#fff, #999);
       }
-      #close {
+      .close {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
         position: absolute;
-        width: 20px;
-        float:right;
-        top: 0; 
-        right: 0; 
-        text-align:right;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
         text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
       }
+
+      .close:hover { background: #00d9ff; }
     </style>
   </head>
   <body>
-    <h2>Page Content</h2>
-    <a href='#' onclick='overlay()'>Click here to show the overlay</a>
-    <div id="overlay">
+    <a href="#openModal" data-action="shareTwit" data-messageId="13357309">Embed Twit</a>
+
+
+    <div id="openModal" class="modalDialog">
       <div>
-        <a id="close" href='#' onclick='overlay()'>X</a>
-        <p>Content to insert.</p>        
+        <a href="#close" title="Close" class="close">X</a>
+        <div class="embedded_st-modal-content">
+          <span class="embedded_st-modal-title">Embed Twit</span>
+          <button type="button" class="embedded_st-cancel-button">X</button>
+        </div>
+        <div class="embedded_st-container">
+          <p>Add this Twit to your website by copying the code below.</p>
+          <div class="textareaContainer">
+            <textarea class="embedded_st-code"></textarea>
+          </div>
+        <div class="embedded_st-header">
+          <div class="embedded_st-dateline"></div>
+          <div class="embedded_st-avatar"></div>
+          <div class="embedded_st-username"></div>
+        </div>
+        <div class="embedded_st-entry-content">
+          <p class="embedded_st-entry-title"></p>
+         <!--  <div class="embedded_st-media"></div> -->
+        </div>
+        <div class="embedded_st-footer">
+          <span class="embedded_st-stats">
+            <span class="embedded_st-stats-comments"></span>
+          </span>
+          <ul class="embedded_st-actions">
+            <li>
+              <a href="#" class="embedded_st-like-action">Like</a>
+            </li>
+            <li>
+              <a href="#" class="embedded_st-share-action">Share</a>
+            </li>
+            <li>
+              <a href="#" class="embedded_st-reply-action">Reply</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <script src="script.js"></script>
+      <script type="text/javascript">
+      _ST.showTwit(13357309);
+      function generateShareCode(messageId) {
+        console.log('Generate share code for:', messageId);
+        var html = '<blockquote class="' + messageId + '" id="stocktwit-twit"><p>'
+                  + $('.embedded_st-username')[0].innerText + '</p>'
+                  + $('.embedded_st-dateline')[0].innerText + '</p>'
+                  + $('.embedded_st-avatar')[0].innerHTML + '<p>'
+                  + $('.embedded_st-entry-content')[0].innerText + '</p>'
+                  + '<scr' + 'ipt async src="http://localhost:8000/widget.js" charset="utf-8"></scr' + 'ipt>';
+        return html;
+      }
+
+      document.addEventListener('click', function(e) {
+        var el = e.target;
+
+        if (el) {
+          // Check if it's a share button
+          var action = el.getAttribute('data-action')
+          if (action === 'shareTwit') {
+            // Get the message ID
+            var messageId = el.getAttribute('data-messageId');
+
+            $('.embedded_st-code').val(generateShareCode(messageId));
+          }
+        }
+      });
+    </script>
       </div>
     </div>
-    <script type="text/javascript">
-      var overlay = function() {
-        el = document.getElementById("overlay");
-        el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-        };
-    </script>
   </body>
 </html>
