@@ -46,5 +46,4 @@ function showTwit(messageId) {
 }
 // Expose under namespace
 _ST.showTwit = showTwit;
-
 }()); 
