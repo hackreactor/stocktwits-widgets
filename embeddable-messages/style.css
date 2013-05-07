@@ -79,6 +79,7 @@ textarea.embedded_st-code {
   border: 2px solid #999;
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 textarea.embedded_st-code:focus {
