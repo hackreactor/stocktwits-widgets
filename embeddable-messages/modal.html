@@ -2,7 +2,7 @@
 <html> 
   <head>
     <style>
-      .modalDialog {
+      .modal-dialog {
         position: fixed;
         font-family: Arial, Helvetica, sans-serif;
         top: 0;
@@ -17,11 +17,11 @@
         transition: opacity 400ms ease-in;
         pointer-events: none;
       }
-      .modalDialog:target {
+      .modal-dialog:target {
         opacity:1;
         pointer-events: auto;
       }
-      .modalDialog > div {
+      .modal-dialog > div {
         width: 500px;
         position: relative;
         margin: 10% auto;
@@ -202,8 +202,8 @@
     </style>
   </head>
   <body>
-    <a href="#openModal" data-action="shareTwit" data-messageId="13357309">Embed Twit</a>
-    <div id="openModal" class="modalDialog">
+    <a href="#open-modal" data-action="share-twit" data-messageId="13357309">Embed Twit</a>
+    <div id="open-modal" class="modal-dialog">
       <div>
         <a href="#close" title="Close" class="close">X</a>
         <div class="embedded_st-modal-content">
