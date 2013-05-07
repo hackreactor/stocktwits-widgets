@@ -13,7 +13,7 @@ var html = '<iframe class="stocktwit-twit-rendered" scrolling="no" frameborder="
           + '<li><a href="#" class="embedded_st-like-action">Like</a></li><li>'
           + '<a href="#" class="embedded_st-share-action">Share</a></li><li>'
           + '<a href="#" class="embedded_st-reply-action">Reply</a></li></ul></div>'
-          
+
 document.body.innerHTML = html;
 
 function require(src) {
@@ -71,11 +71,11 @@ var JSONP = function(url, callback) {
         'July', 'August', 'September', 'October', 'November', 'December'];
 
     //inner text cross browser to avoid XSS .innerText
-    $('.embedded_st-username').html(messageInfo.message.user.username);
-    $('.embedded_st-dateline').html(months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
-      + hours + ':' + date.getMinutes() + ' ' + amOrPm);
-    $('.embedded_st-entry-title').html(messageInfo.message.body);
-    $('.embedded_st-avatar').html('<img src="' + messageInfo.message.user.avatar_url +'"/>');
+    document.getElementsByClassName('embedded_st-username')[0].innerHTML = messageInfo.message.user.username;
+    document.getElementsByClassName('embedded_st-dateline')[0].innerHTML = months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
+      + hours + ':' + date.getMinutes() + ' ' + amOrPm;
+    document.getElementsByClassName('embedded_st-entry-title')[0].innerHTML =  messageInfo.message.body;
+    document.getElementsByClassName('embedded_st-avatar')[0].innerHTML = '<img src="' + messageInfo.message.user.avatar_url +'"/>';
   });
 }
 

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html> 
   <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
       .modalDialog {
@@ -58,8 +57,6 @@
   </head>
   <body>
     <a href="#openModal" data-action="shareTwit" data-messageId="13357309">Embed Twit</a>
-
-
     <div id="openModal" class="modalDialog">
       <div>
         <a href="#close" title="Close" class="close">X</a>
@@ -100,33 +97,33 @@
       </div>
       <script src="script.js"></script>
       <script type="text/javascript">
-      _ST.showTwit(13357309);
-      function generateShareCode(messageId) {
-        console.log('Generate share code for:', messageId);
-        var html = '<blockquote class="' + messageId + '" id="stocktwit-twit"><p>'
-                  + $('.embedded_st-username')[0].innerText + '</p>'
-                  + $('.embedded_st-dateline')[0].innerText + '</p>'
-                  + $('.embedded_st-avatar')[0].innerHTML + '<p>'
-                  + $('.embedded_st-entry-content')[0].innerText + '</p>'
-                  + '<scr' + 'ipt async src="http://localhost:8000/widget.js" charset="utf-8"></scr' + 'ipt>';
-        return html;
-      }
-
-      document.addEventListener('click', function(e) {
-        var el = e.target;
-
-        if (el) {
-          // Check if it's a share button
-          var action = el.getAttribute('data-action')
-          if (action === 'shareTwit') {
-            // Get the message ID
-            var messageId = el.getAttribute('data-messageId');
-
-            $('.embedded_st-code').val(generateShareCode(messageId));
-          }
+        _ST.showTwit(13357309);
+        function generateShareCode(messageId) {
+          console.log('Generate share code for:', messageId);
+          var html = '<blockquote class="' + messageId + '" id="stocktwit-twit"><p>'
+                    + document.getElementsByClassName('embedded_st-username')[0].innerText + '</p>'
+                    + document.getElementsByClassName('embedded_st-dateline')[0].innerText + '</p>'
+                    + document.getElementsByClassName('embedded_st-avatar')[0].innerHTML + '</p>'
+                    + document.getElementsByClassName('embedded_st-entry-content')[0].innerText + '</p>'
+                    + '<scr' + 'ipt async src="http://localhost:8000/widget.js" charset="utf-8"></scr' + 'ipt>';
+          return html;
         }
-      });
-    </script>
+
+        document.addEventListener('click', function(e) {
+          var el = e.target;
+
+          if (el) {
+            // Check if it's a share button
+            var action = el.getAttribute('data-action')
+            if (action === 'shareTwit') {
+              // Get the message ID
+              var messageId = el.getAttribute('data-messageId');
+              console.log( document.getElementsByClassName('embedded_st-code')[0])
+              document.getElementsByClassName('embedded_st-code')[0].innerText = generateShareCode(messageId);
+            }
+          }
+        });
+      </script>
       </div>
     </div>
   </body>
