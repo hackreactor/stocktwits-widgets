@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html> 
+<html>
   <head>
     <style>
       .modal-dialog {
         position: fixed;
-        font-family: Helvetica, Arial, sans-serif;
+        font-family: Arial,Tahoma,sans-serif;
         top: 0;
         right: 0;
         bottom: 0;
@@ -25,33 +25,14 @@
         width: 500px;
         position: relative;
         margin: 10% auto;
-        padding: 5px 20px 13px 20px;
-        border-radius: 10px;
+        border-radius: 5px;
         background: #fff;
         background: -moz-linear-gradient(#fff, #999);
         background: -webkit-linear-gradient(#fff, #999);
         background: -o-linear-gradient(#fff, #999);
         background: linear-gradient(#fff, #999);
       }
-      .close {
-        background: #606061;
-        color: #fff;
-        line-height: 25px;
-        position: absolute;
-        right: -12px;
-        text-align: center;
-        top: -10px;
-        width: 24px;
-        text-decoration: none;
-        font-weight: bold;
-        -webkit-border-radius: 12px;
-        -moz-border-radius: 12px;
-        border-radius: 12px;
-        -moz-box-shadow: 1px 1px 3px #000;
-        -webkit-box-shadow: 1px 1px 3px #000;
-        box-shadow: 1px 1px 3px #000;
-      }
-      .close:hover { background: #00d9ff; }
+
       body {
         font: 12px/18px Arial,Tahoma,sans-serif;
       }
@@ -70,9 +51,7 @@
         text-decoration: none;
       }
       .embedded_st-container {
-        padding: 10px 8px 0 8px;
-        /*With to preserve 500px width of container against padding*/
-        width: 482px;
+        padding: 10px 8px;
         background-color: #f5f5f5;
         border-radius: 5px;
         border: 1px solid #ddddd3; /* Should be a hex code */
@@ -86,13 +65,14 @@
       }
       .embedded_st-modal-content {
         height: 30px;
-        width: 498px; /*2px comes from 1px border around outer element*/
         padding-top: 10px;
         text-align: center;
         background-color: #89130a;
         color: white;
-        margin-left: -8px;
-        margin-top: -10px;
+      }
+      .embedded_st-modal-content:first-child {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
       }
       .embedded_st-modal-title {
         vertical-align: middle;
@@ -101,19 +81,16 @@
       }
       .embedded_st-cancel-button {
         cursor: pointer;
-        height: 41px;
         float: right;
         clear: both;
-        margin-top: -11px;
-        margin-right: 5px;
+        margin: -10px 5px 0 0;
         border: none;
         font-size: 16px;
         color: white;
         padding: 10px;
         background-color: #89130a;
-        vertical-align: middle;
       }
-      .textareaContainer {
+      .textarea-container {
         padding: 0 8px 16px 0;
       }
       textarea.embedded_st-code {
@@ -123,6 +100,7 @@
         border: 2px solid #999;
         border-bottom: 1px solid #ccc;
         border-right: 1px solid #ccc;
+        border-radius: 5px;
       }
       textarea.embedded_st-code:focus {
         outline: none;
@@ -184,41 +162,37 @@
     <a href="#open-modal" data-action="shareTwit" data-messageId="13357309">Embed Twit</a>
     <div id="open-modal" class="modal-dialog">
       <div>
-        <a href="#close" title="Close" class="close">X</a>
         <div class="embedded_st-modal-content">
-          <span class="embedded_st-modal-title">Embed Twit</span>
-          <button type="button" class="embedded_st-cancel-button">X</button>
+            <span class="embedded_st-modal-title">Embed Twit</span>
+            <button type="button" class="embedded_st-cancel-button">&times;</button>
         </div>
         <div class="embedded_st-container">
           <p>Add this Twit to your website by copying the code below.</p>
-          <div class="textareaContainer">
+          <div class="textarea-container">
             <textarea class="embedded_st-code"></textarea>
           </div>
-        <div class="embedded_st-header">
-          <div class="embedded_st-dateline"></div>
-          <div class="embedded_st-avatar"></div>
-          <div class="embedded_st-username"></div>
-        </div>
-        <div class="embedded_st-entry-content">
-          <p class="embedded_st-entry-title"></p>
-         <!--  <div class="embedded_st-media"></div> -->
-        </div>
-        <div class="embedded_st-footer">
-          <span class="embedded_st-stats">
-            <span class="embedded_st-stats-comments"></span>
-          </span>
-          <ul class="embedded_st-actions">
-            <li>
-              <a href="#" class="embedded_st-like-action">Like</a>
-            </li>
-            <li>
-              <a href="#" class="embedded_st-share-action">Share</a>
-            </li>
-            <li>
-              <a href="#" class="embedded_st-reply-action">Reply</a>
-            </li>
-          </ul>
-        </div>
+          <div class="embedded_st-header">
+            <div class="embedded_st-dateline"></div>
+            <div class="embedded_st-avatar"></div>
+            <div class="embedded_st-username"></div>
+          </div>
+          <div class="embedded_st-entry-content">
+            <div class="embedded_st-entry-title"></div>
+           <!--  <div class="embedded_st-media"></div> -->
+          </div>
+          <div class="embedded_st-footer">
+            <ul class="embedded_st-actions">
+              <li>
+                <a href="#" class="embedded_st-like-action">Like</a>
+              </li>
+              <li>
+                <a href="#" class="embedded_st-share-action">Share</a>
+              </li>
+              <li>
+                <a href="#" class="embedded_st-reply-action">Reply</a>
+              </li>
+            </ul>
+          </div>
       </div>
       <script src="script.js"></script>
       <script type="text/javascript">
