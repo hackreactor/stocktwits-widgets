@@ -21,9 +21,7 @@
         text-decoration: none;
       }
       .embedded_st-container {
-        padding: 10px 8px 0 8px;
-        /*With to preserve 500px width of container against padding*/
-        width: 482px;
+        padding: 10px 8px;
         background-color: #f5f5f5;
         border-radius: 5px;
         border: 1px solid #ddddd3; /* Should be a hex code */
@@ -37,13 +35,14 @@
       }
       .embedded_st-modal-content {
         height: 30px;
-        width: 498px; /*2px comes from 1px border around outer element*/
         padding-top: 10px;
         text-align: center;
         background-color: #89130a;
         color: white;
-        margin-left: -8px;
-        margin-top: -10px;
+      }
+      .embedded_st-modal-content:first-child {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
       }
       .embedded_st-modal-title {
         vertical-align: middle;
@@ -52,19 +51,16 @@
       }
       .embedded_st-cancel-button {
         cursor: pointer;
-        height: 41px;
         float: right;
         clear: both;
-        margin-top: -11px;
-        margin-right: 5px;
+        margin: -10px 5px 0 0;
         border: none;
         font-size: 16px;
         color: white;
         padding: 10px;
         background-color: #89130a;
-        vertical-align: middle;
       }
-      .textareaContainer {
+      .textarea-container {
         padding: 0 8px 16px 0;
       }
       textarea.embedded_st-code {
@@ -74,6 +70,7 @@
         border: 2px solid #999;
         border-bottom: 1px solid #ccc;
         border-right: 1px solid #ccc;
+        border-radius: 5px;
       }
       textarea.embedded_st-code:focus {
         outline: none;
@@ -195,7 +192,7 @@
               'July', 'August', 'September', 'October', 'November', 'December'];
           //inner text cross browser to avoid XSS .innerText
           document.getElementsByClassName('embedded_st-username')[0].innerHTML = messageInfo.message.user.username;
-          document.getElementsByClassName('embedded_st-dateline')[0].innerHTML = months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
+          document.getElementsByClassName('embedded_st-dateline')[0].innerHTML = months[date.getMonth()] + ' ' + date.getDate() + ' at '
             + hours + ':' + date.getMinutes() + ' ' + amOrPm;
           document.getElementsByClassName('embedded_st-entry-title')[0].innerHTML =  messageInfo.message.body;
           document.getElementsByClassName('embedded_st-avatar')[0].innerHTML = '<img src="' + messageInfo.message.user.avatar_url +'"/>';
@@ -203,7 +200,7 @@
       }
       // Expose under namespace
       _ST.showTwit = showTwit;
-      }()); 
+      }());
     </script>
     <script>_ST.showTwit(window.location.search.substring(window.location.search.indexOf('messageID=') + 10));</script>
   </body>
