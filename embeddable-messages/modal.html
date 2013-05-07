@@ -50,13 +50,10 @@
         -webkit-box-shadow: 1px 1px 3px #000;
         box-shadow: 1px 1px 3px #000;
       }
-
       .close:hover { background: #00d9ff; }
-
       body {
         font: 12px/18px Arial,Tahoma,sans-serif;
       }
-
       ul {
         list-style-type: none;
         margin: 0;
@@ -64,16 +61,13 @@
         clear: both;
         overflow: hidden;
       }
-
       li {
         float: left;
         padding-left: 5px;
       }
-
       a {
         text-decoration: none;
       }
-
       .embedded_st-container {
         padding: 10px 8px 0 8px;
         /*With to preserve 500px width of container against padding*/
@@ -85,12 +79,10 @@
         border-bottom-color: #bbbbbb;
         overflow: hidden;
       }
-
       .embedded_st-container p {
         font-size: 14px;
         margin-left: 1px;
       }
-
       .embedded_st-modal-content {
         height: 30px;
         width: 498px; /*2px comes from 1px border around outer element*/
@@ -101,13 +93,11 @@
         margin-left: -8px;
         margin-top: -10px;
       }
-
       .embedded_st-modal-title {
         vertical-align: middle;
         font-size: 16px;
         text-shadow: 0 -1px 0 #000;
       }
-
       .embedded_st-cancel-button {
         cursor: pointer;
         height: 41px;
@@ -122,11 +112,9 @@
         background-color: #89130a;
         vertical-align: middle;
       }
-
       .textareaContainer {
         padding: 0 8px 16px 0;
       }
-
       textarea.embedded_st-code {
         width: 100%;
         display: block;
@@ -135,24 +123,20 @@
         border-bottom: 1px solid #ccc;
         border-right: 1px solid #ccc;
       }
-
       textarea.embedded_st-code:focus {
         outline: none;
         border-color: #9ecaed;
         box-shadow: 0 0 5px #9ecaed;
       }
-
       .embedded_st-header {
         margin-left: -4px;
       }
-
       .embedded_st-dateline {
         float: right;
         height: 18px;
         color: #898989;
         margin-right: 4px;
       }
-
       .embedded_st-avatar {
         position: relative;
         float: left;
@@ -162,37 +146,31 @@
         margin-right: 10px;
         margin-left: 10px;
       }
-
       .embedded_st-username {
         color: #000;
         font-size: 14px;
         font-weight: bold;
         padding-left: 8px;
       }
-
       .embedded_st-entry-title {
         line-height: 1.3;
         font-size: 14px;
       }
-
       .embedded_st-media {
         margin-top: 25px;
         height: 300px;
         width: 100%;
         background-color: gray;
       }
-
       .embedded_st-actions {
         padding-bottom: 10px;
         font-size: 14px;
       }
-
       .embedded_st-like-action,
       .embedded_st-share-action,
       .embedded_st-reply-action {
         color: #5774a2;
       }
-
       .embedded_st-share-action:before,
       .embedded_st-reply-action:before {
         content: "\2022";
@@ -202,7 +180,7 @@
     </style>
   </head>
   <body>
-    <a href="#open-modal" data-action="share-twit" data-messageId="13357309">Embed Twit</a>
+    <a href="#open-modal" data-action="shareTwit" data-messageId="13357309">Embed Twit</a>
     <div id="open-modal" class="modal-dialog">
       <div>
         <a href="#close" title="Close" class="close">X</a>
@@ -245,7 +223,7 @@
       <script type="text/javascript">
         _ST.showTwit(13357309);
         function generateShareCode(messageId) {
-          var html = '<blockquote class="' + messageId + '" id="stocktwit-twit"><p>'
+          var html = '<blockquote id="' + messageId + '" class="stocktwit-twit"><p>'
                     + document.getElementsByClassName('embedded_st-username')[0].innerText + '</p>'
                     + document.getElementsByClassName('embedded_st-dateline')[0].innerText + '</p>'
                     + document.getElementsByClassName('embedded_st-avatar')[0].innerHTML + '</p>'
@@ -253,20 +231,22 @@
                     + '<scr' + 'ipt async src="http://localhost:8000/widget.js" charset="utf-8"></scr' + 'ipt>';
           return html;
         }
-
-        document.addEventListener('click', function(e) {
-          var el = e.target;
-
-          if (el) {
-            // Check if it's a share button
-            var action = el.getAttribute('data-action')
-            if (action === 'shareTwit') {
-              // Get the message ID
-              var messageId = el.getAttribute('data-messageId');
-              document.getElementsByClassName('embedded_st-code')[0].innerText = generateShareCode(messageId);
+        if(document.addEventListener) {
+          document.addEventListener('click', function(e) {
+            var el = e.target;
+            if (el) {
+              // Check if it's a share button
+              var action = el.getAttribute('data-action')
+              if (action === 'shareTwit') {
+                // Get the message ID
+                var messageId = el.getAttribute('data-messageId');
+                document.getElementsByClassName('embedded_st-code')[0].innerText = generateShareCode(messageId);
+              }
             }
-          }
-        });
+          });
+        } else {
+          //support IE
+        }
       </script>
       </div>
     </div>
