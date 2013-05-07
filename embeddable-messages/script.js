@@ -32,10 +32,8 @@ function showTwit(messageId) {
     } else {
       hours = hours - 12;
     }
-
     var months = ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
-
     //inner text cross browser to avoid XSS .innerText
     document.getElementsByClassName('embedded_st-username')[0].innerHTML = messageInfo.message.user.username;
     document.getElementsByClassName('embedded_st-dateline')[0].innerText = months[date.getMonth()] + ' ' + date.getDate() + ' at ' 
