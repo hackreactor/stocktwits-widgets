@@ -77,8 +77,6 @@ textarea.embedded_st-code {
   display: block;
   resize: none;
   border: 2px solid #999;
-  border-right-color: #ccc;
-  border-bottom-color: #ccc;
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
 }
