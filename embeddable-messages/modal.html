@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
   <head>
-        <style>
+    <style>
       .modalDialog {
         position: fixed;
         font-family: Arial, Helvetica, sans-serif;
@@ -245,7 +245,6 @@
       <script type="text/javascript">
         _ST.showTwit(13357309);
         function generateShareCode(messageId) {
-          console.log('Generate share code for:', messageId);
           var html = '<blockquote class="' + messageId + '" id="stocktwit-twit"><p>'
                     + document.getElementsByClassName('embedded_st-username')[0].innerText + '</p>'
                     + document.getElementsByClassName('embedded_st-dateline')[0].innerText + '</p>'
@@ -264,7 +263,6 @@
             if (action === 'shareTwit') {
               // Get the message ID
               var messageId = el.getAttribute('data-messageId');
-              console.log( document.getElementsByClassName('embedded_st-code')[0])
               document.getElementsByClassName('embedded_st-code')[0].innerText = generateShareCode(messageId);
             }
           }
