@@ -4,124 +4,55 @@
     <title>StockTwit</title>
     <style>
       body {
-        font: 12px/18px Arial,Tahoma,sans-serif;
-      }
-      ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 8px 0 0 0;
-        clear: both;
-        overflow: hidden;
-      }
-      li {
-        float: left;
-        padding-left: 5px;
+        font: 14px/1.5 Arial,Tahoma,sans-serif;
       }
       a {
         text-decoration: none;
+        color: #5774a2;
       }
-      .embedded_st-container {
-        padding: 10px 8px;
-        background-color: #f5f5f5;
-        border-radius: 5px;
-        border: 1px solid #ddddd3; /* Should be a hex code */
-        border-top: 0;
-        border-bottom-color: #bbbbbb;
-        overflow: hidden;
-      }
-      .embedded_st-container p {
-        font-size: 14px;
-        margin-left: 1px;
-      }
-      .embedded_st-modal-content {
-        height: 30px;
-        padding-top: 10px;
-        text-align: center;
-        background-color: #89130a;
-        color: white;
-      }
-      .embedded_st-modal-content:first-child {
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-      }
-      .embedded_st-modal-title {
-        vertical-align: middle;
-        font-size: 16px;
-        text-shadow: 0 -1px 0 #000;
-      }
-      .embedded_st-cancel-button {
-        cursor: pointer;
-        float: right;
-        clear: both;
-        margin: -10px 5px 0 0;
-        border: none;
-        font-size: 16px;
-        color: white;
-        padding: 10px;
-        background-color: #89130a;
-      }
-      .textarea-container {
-        padding: 0 8px 16px 0;
-      }
-      textarea.embedded_st-code {
-        width: 100%;
-        display: block;
-        resize: none;
-        border: 2px solid #999;
-        border-bottom: 1px solid #ccc;
-        border-right: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      textarea.embedded_st-code:focus {
-        outline: none;
-        border-color: #9ecaed;
-        box-shadow: 0 0 5px #9ecaed;
-      }
-      .embedded_st-header {
-        margin-left: -4px;
-      }
-      .embedded_st-dateline {
-        float: right;
-        height: 18px;
-        color: #898989;
-        margin-right: 4px;
+      a:hover {
+        text-decoration: underline;
       }
       .embedded_st-avatar {
-        position: relative;
         float: left;
-        top: 0;
         width: 50px;
         height: 50px;
-        margin-right: 10px;
-        margin-left: 10px;
-      }
-      .embedded_st-username {
-        color: #000;
-        font-size: 14px;
-        font-weight: bold;
-        padding-left: 8px;
       }
       .embedded_st-entry-title {
         line-height: 1.3;
-        font-size: 14px;
       }
-      .embedded_st-media {
-        margin-top: 25px;
-        height: 300px;
+      .embedded_st-entry-title .symbol {
+        font-weight: bold;
+      }
+      .embedded_st-main-column {
+        margin-left: 60px;
+      }
+      .embedded_st-dateline {
+        float: right;
+        color: #898989;
+      }
+      .embedded_st-username {
+        color: #000;
+        font-weight: bold;
+      }
+      /*TODO id=13455044*/
+      .embedded_st-media a {
+        display: block;
         width: 100%;
-        background-color: gray;
+        margin-top: 10px;
       }
       .embedded_st-actions {
-        padding-bottom: 10px;
-        font-size: 14px;
+        list-style-type: none;
+        margin: 0;
+        padding: 8px 0 0 0;
       }
-      .embedded_st-like-action,
-      .embedded_st-share-action,
-      .embedded_st-reply-action {
-        color: #5774a2;
+      .embedded_st-actions li {
+        float: left;
       }
-      .embedded_st-share-action:before,
-      .embedded_st-reply-action:before {
+      .embedded_st-actions li + li {
+        padding-left: 5px;
+      }
+      .embedded_st-actions li + li:before {
         content: "\2022";
         padding-right: 5px;
         color: #898989;
@@ -129,31 +60,33 @@
     </style>
   </head>
   <body>
-    <div class="embedded_st-header">
-      <div id="embedded_st-dateline" class="embedded_st-dateline"></div>
-      <div id="embedded_st-avatar" class="embedded_st-avatar"></div>
-      <div id="embedded_st-username" class="embedded_st-username"></div>
+    <div id="embedded_st-avatar" class="embedded_st-avatar"></div>
+    <div class="embedded_st-main-column">
+      <div class="embedded_st-header">
+        <div id="embedded_st-dateline" class="embedded_st-dateline"></div>
+        <div id="embedded_st-username" class="embedded_st-username"></div>
+      </div>
+      <div class="embedded_st-entry-content">
+        <div id="embedded_st-entry-title" class="embedded_st-entry-title"></div>
+      </div>
+      <div class="embedded_st-media" id="embedded_st-media"></div>
+      <div class="embedded_st-footer">
+        <span class="embedded_st-stats">
+          <span class="embedded_st-stats-comments"></span>
+        </span>
+        <ul class="embedded_st-actions">
+          <li>
+            <a href="#" class="embedded_st-like-action">Like</a>
+          </li>
+          <li>
+            <a href="#" class="embedded_st-share-action">Share</a>
+          </li>
+          <li>
+            <a href="#" class="embedded_st-reply-action">Reply</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="embedded_st-entry-content">
-      <p id="embedded_st-entry-title" class="embedded_st-entry-title"></p>
-    </div>
-    <div class="embedded_st-footer">
-      <span class="embedded_st-stats">
-        <span class="embedded_st-stats-comments"></span>
-      </span>
-      <ul class="embedded_st-actions">
-        <li>
-          <a href="#" class="embedded_st-like-action">Like</a>
-        </li>
-        <li>
-          <a href="#" class="embedded_st-share-action">Share</a>
-        </li>
-        <li>
-          <a href="#" class="embedded_st-reply-action">Reply</a>
-        </li>
-      </ul>
-    </div>
-  </div>
     <script>
       (function() {
       var require = function(src) {
@@ -200,8 +133,14 @@
           var messageBody =  messageInfo.message.body;
           for(var i = 0; i < symbols.length; i++) {
             messageBody = messageBody.replace(new RegExp('(?:^|\\s)(\\$' + symbols[i].symbol + ')(?:$|\\s)', 'g'), function(_, str){
-              return ' <a href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
+              return ' <a class="symbol" href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
             });
+          }
+          if(messageInfo.message.entities.chart) {
+            document.getElementById('embedded_st-media').innerHTML =
+              '<a target="_blank" href="' + messageInfo.message.entities.chart.url + '">' +
+                '<img src="' + messageInfo.message.entities.chart.thumb + '">' +
+              '</a>';
           }
           messageBody = messageBody.replace(/\bhttp:\/\/stks\.co\/\w+\b/g, function(str){
             return ' <a href="' + str + '">' + str + '</a> ';
