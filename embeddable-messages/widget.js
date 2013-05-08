@@ -1,8 +1,53 @@
-var messageID = parseInt(document.getElementsByClassName('stocktwit-twit')[0].id);
-var html = '<iframe class="stocktwit-twit-rendered" src="http://localhost:8000/index.html?messageID=' + messageID + '" scrolling="no" frameborder="0" allowtransparency="true"'
-          + ' style="display: block; border-style: solid; border-width: 1px; border-color: rgb(238, 238, 238) '
-          + 'rgb(221, 221, 221) rgb(187, 187, 187); max-width: 99%; min-width: 220px; padding: 0px; border-top-left-radius: '
-          + '5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; margin: 10px '
-          + '0px; box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 3px;" title="Embedded Tweet" width="500" height="150"></iframe>';
+(function(){
 
-document.body.innerHTML = html;
+	var __slice = function (object, from) {
+    return Array.prototype.slice.call(object, from || 0);
+  };
+
+  var getElementsByClassName; // Function to get class names
+
+  if (document.getElementsByClassName) {
+    getElementsByClassName = function (className) {
+      return __slice(document.getElementsByClassName(className));
+    };
+  } else {
+    getElementsByClassName = function (className) {
+      var found    = [],
+          regex    = new RegExp('(^| )' + className + '($| )'),
+          elements = document.getElementsByTagName('*');
+      for (var i = 0; i < elements.length; i++) {
+        if (regex.test(elements[i].className)) {
+          found.push(elements[i]);
+        }
+      }
+      return found;
+    };
+  }
+
+	var createMessage = function(element){
+		var messageID = parseInt(element.getAttribute('data-id'));
+		var iframe = document.createElement('iframe');
+		iframe.class = 'stocktwit-twit-rendered';
+		iframe.src = 'embeddable-messages/index.html?messageID=' + messageID;
+		iframe.scrolling = 'no';
+		iframe.setAttribute('frameborder',       0);
+    iframe.setAttribute('allowtransparency', 'true');
+		iframe.style.display = 'block'; 
+		iframe.style.border = '1px solid';
+		iframe.style.borderColor = '#eee #ddd #bbb';
+		iframe.style.maxWidth = '99%';
+		iframe.style.minWidth = '220px';
+		iframe.style.borderRadius = '5px';
+		iframe.style.margin = '10px';
+		iframe.style.boxShadow = 'rgba(0, 0, 0, 0.14902) 0px 1px 3px';
+		iframe.title = 'Embedded Tweet';
+		iframe.width = '500';
+		iframe.height = '150';
+		element.parentNode.replaceChild(iframe, element);
+	};
+  var elements = getElementsByClassName('stocktwit-twit');
+
+  for (var i = 0; i < elements.length; i++) {
+    createMessage(elements[i]);
+  }
+})();
