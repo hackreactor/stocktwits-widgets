@@ -202,8 +202,8 @@
                     + document.getElementsByClassName('embedded_st-username')[0].innerText + '</p>'
                     + document.getElementsByClassName('embedded_st-dateline')[0].innerText + '</p>'
                     + document.getElementsByClassName('embedded_st-avatar')[0].innerHTML + '</p>'
-                    + document.getElementsByClassName('embedded_st-entry-content')[0].innerText + '</p>'
-                    + '<scr' + 'ipt async src="http://hackreactor.github.io/stocktwits-widgets/embeddable-messages/widget.js" charset="utf-8"></scr' + 'ipt>';
+                    + document.getElementsByClassName('embedded_st-entry-content')[0].innerText + '</p></blockquote>'
+                    + '<scr' + "ipt>(function(d){var b=d.getElementsByTagName('body')[0],s=d.createElement('script');s.src='embeddable-messages/widget.js';b.appendChild(s);})(document);</scr" + 'ipt>';
           return html;
         }
         if(document.addEventListener) {
