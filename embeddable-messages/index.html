@@ -130,12 +130,12 @@
   </head>
   <body>
     <div class="embedded_st-header">
-      <div class="embedded_st-dateline"></div>
-      <div class="embedded_st-avatar"></div>
-      <div class="embedded_st-username"></div>
+      <div id="embedded_st-dateline" class="embedded_st-dateline"></div>
+      <div id="embedded_st-avatar" class="embedded_st-avatar"></div>
+      <div id="embedded_st-username" class="embedded_st-username"></div>
     </div>
     <div class="embedded_st-entry-content">
-      <p class="embedded_st-entry-title"></p>
+      <p id="embedded_st-entry-title" class="embedded_st-entry-title"></p>
     </div>
     <div class="embedded_st-footer">
       <span class="embedded_st-stats">
@@ -155,9 +155,8 @@
     </div>
   </div>
     <script>
-      var _ST = _ST || {};
       (function() {
-      function require(src) {
+      var require = function(src) {
         var doc = document.documentElement;
         var script = document.createElement('script');
         script.src = src;
@@ -175,10 +174,8 @@
         require(url + '?callback=' + GLOBALCALLBACKNAME);
         // append to head
       };
-      function showTwit(messageId) {
-        var frame = document.createElement("iframe");
-        JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function(messageInfo){
-          var date = new Date(messageInfo.message.created_at);
+      var displayDate = function(timeMade) {
+        var date = new Date(timeMade);
           var amOrPm = date.getHours() > 11 ? 'PM' : 'AM';
           var hours = date.getHours();
           if(amOrPm == 'AM'){
@@ -190,18 +187,35 @@
           }
           var months = ['January', 'February', 'March', 'April', 'May', 'June',
               'July', 'August', 'September', 'October', 'November', 'December'];
-          //inner text cross browser to avoid XSS .innerText
-          document.getElementsByClassName('embedded_st-username')[0].innerHTML = messageInfo.message.user.username;
-          document.getElementsByClassName('embedded_st-dateline')[0].innerHTML = months[date.getMonth()] + ' ' + date.getDate() + ' at '
-            + hours + ':' + date.getMinutes() + ' ' + amOrPm;
-          document.getElementsByClassName('embedded_st-entry-title')[0].innerHTML =  messageInfo.message.body;
-          document.getElementsByClassName('embedded_st-avatar')[0].innerHTML = '<img src="' + messageInfo.message.user.avatar_url +'"/>';
+
+          return months[date.getMonth()] + ' ' + date.getDate() + ' at ' + hours + ':' + date.getMinutes() + ' ' + amOrPm;
+      };
+      var showTwit = function(messageId) {
+        var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
+        var frame = document.createElement("iframe");
+        JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function(messageInfo){
+          document.getElementById('embedded_st-username')[innerText] = messageInfo.message.user.username;
+          document.getElementById('embedded_st-dateline')[innerText] = displayDate(messageInfo.message.created_at);
+          var symbols = messageInfo.message.symbols;
+          var messageBody =  messageInfo.message.body;
+          for(var i = 0; i < symbols.length; i++) {
+            messageBody = messageBody.replace(new RegExp('(?:^|\\s)(\\$' + symbols[i].symbol + ')(?:$|\\s)', 'g'), function(_, str){
+              return ' <a href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
+            });
+          }
+          messageBody = messageBody.replace(/\bhttp:\/\/stks\.co\/\w+\b/g, function(str){
+            return ' <a href="' + str + '">' + str + '</a> ';
+          });
+          document.getElementById('embedded_st-entry-title').innerHTML = messageBody;
+          var image = document.createElement('img');
+          image.width = '50';
+          image.height = '50';
+          image.src = messageInfo.message.user.avatar_url;
+          document.getElementById('embedded_st-avatar').appendChild(image);
         });
       }
-      // Expose under namespace
-      _ST.showTwit = showTwit;
+      showTwit(window.location.search.substring(window.location.search.indexOf('messageID=') + 10));
       }());
     </script>
-    <script>_ST.showTwit(window.location.search.substring(window.location.search.indexOf('messageID=') + 10));</script>
   </body>
 </html>
