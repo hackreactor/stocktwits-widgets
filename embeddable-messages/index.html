@@ -143,13 +143,13 @@
       </span>
       <ul class="embedded_st-actions">
         <li>
-          <a href="#" class="embedded_st-like-action">Like</a>
+          <a href="#" id="embedded_st-like-action">Like</a>
         </li>
         <li>
-          <a href="#" class="embedded_st-share-action">Share</a>
+          <a href="#" id="embedded_st-share-action">Share</a>
         </li>
         <li>
-          <a href="#" class="embedded_st-reply-action">Reply</a>
+          <a href="#" id="embedded_st-reply-action">Reply</a>
         </li>
       </ul>
     </div>
@@ -200,11 +200,11 @@
           var messageBody =  messageInfo.message.body;
           for(var i = 0; i < symbols.length; i++) {
             messageBody = messageBody.replace(new RegExp('(?:^|\\s)(\\$' + symbols[i].symbol + ')(?:$|\\s)', 'g'), function(_, str){
-              return ' <a href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
+              return ' <a target="_blank" href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
             });
           }
           messageBody = messageBody.replace(/\bhttp:\/\/stks\.co\/\w+\b/g, function(str){
-            return ' <a href="' + str + '">' + str + '</a> ';
+            return ' <a target="_blank" href="' + str + '">' + str + '</a> ';
           });
           document.getElementById('embedded_st-entry-title').innerHTML = messageBody;
           var image = document.createElement('img');
