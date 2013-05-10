@@ -78,6 +78,45 @@
         font-size: 12px;
         line-height: 18px;
       }
+      .st-count {
+        position: relative;
+        display: none;
+        height: 18px;
+        max-width: 100%;
+        margin-left: 5px;
+        border-image: initial;
+        background: white;
+        border: #BBB solid 1px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        zoom: 1;
+        font: normal normal normal 11px/1.7 "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+        white-space: nowrap;
+        text-decoration: none;
+        padding-left: 3px;
+        padding-right: 3px;
+      }
+      .st-count i,
+      .st-count u {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 0;
+        height: 0;
+        margin: -4px 0 0 -4px;
+        line-height: 0;
+        border: 4px transparent solid;
+        border-left: 0;
+        border-right-color: #AAA;
+        zoom: 1;
+      }
+      .st-count u {
+        margin: -2px 0 0 -2px;
+        border-width: 2px;
+        border-right-color: white;
+      }
       @media (-moz-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .st-icon {
           background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAE4ElEQVRYhb2WW2xUVRSGv30uczpDW2tpi+ViCzRAgSAKMSQYVGhsRypSRd6MCQ8iRCMKGPABExMJlpumGA3BeCFoYkhJCoZEAUlDI41EaholFAq2pVx6oTc603NmZm8fKjMtczqU0vR/O3vvtf5/r7MuWyilOJKbpRhLyAjeKdMoqvpDGACNvcEx5UcpjJs3ATAA+qQccwG648QEiLGlB0AIEROQCDIcIhIKoWk6CJARiRCgmx6ErhNxHNQwIqiZJpqux60nFBCxbbLmzWfmipVkzJqNput0N1/jxp/naDpTSfe1Jh5/ZgnJ2RMTswu4VXOe2/WX40QMKSDiOCxc9w5Ltn2MlZIStx9oa+XXze+R/+pqZhSvSCwA+GXTBlov/IPm9Q5a11zJbZu8ohcp2LHLlRxApKRy6fJlBMOrYCWla665RkDoOgvWrkcMCNel2lrOnjhB1qRJLPb7qT5aQevZaro6O7nV3IxSkJr2CL7k5KhNR1sbdp+NEBC4cyeaeAkFKCnxpo8nc/bc6FpPVxd7V5UQqKsnbMCRpxaSFrhDhs/i603v06GZhGybNZ9sZ/lb66J2X65fx/mTJ9EtDznhPjIti3vT1TUCummiW1b02+vz8UrJSv4++A19nR301JzDtDxgGuQ6QXJVgFCgj4ywM8jPVCcAwU50aSGEQLpEIC4HhBD0dnfT1dYWU2maFOzYxeuV1bxQ9hXzli/HZxpEwmGEEAhNQ2jEhTi2p4ELuasAhMDp6ebUwe/jttKn5/HkmjdZXX6Mkh8OkzJxEjIcdnU8XLhWgdeyqN73Ofu2buV6Q4OrYV6hn6LPvuivazXyWeYqQArBFE1xYc8ONi9exIevreLw/v20t7QMOjd1WQEZ+bORkZFHwVUAgESRY5nM7W4nfKyco+vXsnXZ81xv+DdmbJh4MzKH1YofSEDEcZi8aDFLS/cyLiOTNBT5Jkxuqsfp6IiJlJJgTw9CDHmP+8K9EWkai97dyPRCP3mFfup+rqCnuZmcJc+R+8T86LnbN27QcvUKmq4TCYVGR0DYtpn10stML/QDkDZ1Gk+/vcHV+NR332K33MKblDQicnD5Bbqm0djaTk119ZBGUkrKDxzgzO5P8Q1oWIbHM9i5y/i9F3ER0EyT1rNVlBYVMOXZpSws8jNtzhzGpaYS7O2lvraWqiPldFf+xgxLR2n9dzBMk8qKCn5vbI4OqOClOnQj8ZNDKKUoHT9uUCELAKVo67NpCUmCHg/KMBHhMN6QTbapk540uK8LoN126LTD0amX7bPwGnr8vFQKPTmVjY03has8BSAEGd4ksrz93wqJMHREkg8JcUNFAeMtD5lW7DfIu74SIGF8FBAZcMf7ORt8fngwANxSZShHGqPziL3LaQBcDQ++mwAe08G8Z4JpQFtE0qPEQ4lQUuLTjJiAvwxr40Aar64nZWNv1iLhNPm/IKUUV9C5lvJoeUcgWBWfBcOHlJDu7X/qCeU2ycrKrN3bt11UjpMDYEtJnW7ZfZNzP/qgpmbPAhhZ23OBaxM/dPy4pUDoQGdEUpuU2sDc+SU/1dSUjib5kAIAhFKiKQIX0yeczCr0L/vu9Onj6v5V9cBwLcPeUIuoVYYIZmeXvbFz55bi4uLAaBMnFNCeP88zIWvmFt+hQz8WP0y2DQP/Aau/w81VyQ7sAAAAAElFTkSuQmCC");
@@ -91,7 +130,11 @@
         <span class="st-icon"></span>
         <span class="st-text" id="st-text">Share Page</span>
       </a>
-      <a class="st-count" id="st-count" href="#" target="_blank"></a>
+      <a class="st-count" id="st-count" href="https://stocktwits.com/widgets/share" target="_blank">
+        <i></i>
+        <u></u>
+        <div class="widget-val">99</div>
+      </a>
     </span>
 
     <!-- Emulate what can be done server side anyway -->
@@ -189,7 +232,7 @@
       };
     </script>
 
-    <!--  -->
+    <!-- Scripts to do authentication for following users -->
     <script>
       window.followUser  = function (accessToken) {
         jsonpRequest('https://api.stocktwits.com/api/2/search/users.json?access_token=' + encodeURIComponent(accessToken) + '&q=' + encodeURIComponent(params.follow), function (data) {
@@ -262,6 +305,13 @@
           if (!text.length) {
             text.push(params.pageTitle);
             text.push(params.pageUrl);
+
+            if (params.count) {
+              jsonpRequest('http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=' + encodeURIComponent(params.pageUrl), function (data) {
+                stCount[innerText] = data.totals.shares;
+                stCount.style.display = 'inline-block';
+              });
+            }
           }
           // Append to the link
           stBtn.href += '?body=' + encodeURIComponent(text);
