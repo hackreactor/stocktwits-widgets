@@ -1,2 +1,1 @@
-stocktwits-widgets
-==================
+# StockTwits Widgets
