@@ -129,7 +129,7 @@
       <span class="st-icon"></span>
       <span class="st-text" id="st-text">Share Page</span>
     </a>
-    <a class="st-count" id="st-count" href="#" target="_blank">
+    <a class="st-count" id="st-count" href="https://stocktwits.com/widgets/share" target="_blank">
       <i></i>
       <u></u>
       <div class="widget-val">99</div>
@@ -273,7 +273,7 @@
           text.push(params.pageTitle);
           text.push(params.pageUrl);
           if (params.count) {
-            jsonpRequest("http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=" + encodeURIComponent(params.pageUrl), function (data) {
+            jsonpRequest('http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=' + encodeURIComponent(params.pageUrl), function (data) {
               stCount[innerText] = data.totals.shares;
               stCount.style.display = 'inline-block';
             });
