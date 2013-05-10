@@ -3,7 +3,7 @@
     return Array.prototype.slice.call(object, from || 0);
   };
 
-  var getElementsByClassName; // Function to get class names
+  var getElementsByClassName; // Function to get elements by class names
 
   if (document.getElementsByClassName) {
     getElementsByClassName = function (className) {

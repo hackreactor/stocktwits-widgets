@@ -1,19 +1,6 @@
 <!doctype html>
 <html>
 <body>
-  <!-- Emulate what can be done server side anyway -->
-  <script>
-    var params = (function () {
-      var hash;
-      var vars  = {};
-      var query = window.location.search.slice(1).split('&');
-      for (var i = 0; i < query.length; i++) {
-        hash = query[i].split('=');
-        vars[hash[0]] = decodeURIComponent(hash[1]);
-      }
-      return vars;
-    })();
-  </script>
   <!-- Inline styles to minimise HTTP requests -->
   <style>
     html,
@@ -105,51 +92,158 @@
     </a>
     <a class="st-count" id="st-count" href="#" target="_blank"></a>
   </span>
-  <!-- Inline script tags to minimise HTTP requests -->
+  <!-- Emulate what can be done server side anyway -->
   <script>
-    var stBtn     = document.getElementById('st-btn'),
-        stTxt     = document.getElementById('st-text'),
-        innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
-
-    var addEvent = function (el, event, fn) {
-      if (el.addEventListener) {
-        el.addEventListener(event, fn, false);
-      } else if (el.attachEvent) {
-        el.attachEvent('on' + event, fn);
+    var parseParams = function (string) {
+      var params = {},
+          query  = string.split('&'),
+          hash;
+      for (var i = 0; i < query.length; i++) {
+        hash = query[i].split('=');
+        params[hash[0]] = decodeURIComponent(hash[1]);
+      }
+      return params;
+    };
+    var params = parseParams(window.location.search.slice(1));
+  </script>
+  <!-- Little cookie library from MDN (mdn.io/cookie) -->
+  <script>
+    var docCookies = {
+      getItem: function (sKey) {
+        return unescape(document.cookie.replace(new RegExp("(?:(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*)|.*"), "$1")) || null;
+      },
+      setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+        var sExpires = "";
+        if (vEnd) {
+          switch (vEnd.constructor) {
+            case Number:
+              sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+              break;
+            case String:
+              sExpires = "; expires=" + vEnd;
+              break;
+            case Date:
+              sExpires = "; expires=" + vEnd.toGMTString();
+              break;
+          }
+        }
+        document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+        return true;
+      },
+      removeItem: function (sKey, sPath) {
+        if (!sKey || !this.hasItem(sKey)) { return false; }
+        document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath : "");
+        return true;
+      },
+      hasItem: function (sKey) {
+        return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
       }
     };
+  </script>
+  <!-- Semi-horrible JSONP request -->
+  <script>
+    var jsonpRequest = function (url, cb) {
+      var name    = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
+          script  = document.createElement('script'),
+          timeout = setTimeout(endCallback, 5000); // Assume the page failed loading
 
-    // https://stocktwits.com/widgets/share?body=StockTwits%20for%20Developers%20http%3A%2F%2Fstocktwits.com%2Fdevelopers%2Fdocs%2Fshare-button
-    var text = [];
+      var endCallback = function () {
+        clearTimeout(timeout);
+        delete window[name];
+      };
 
-    if (params.follow) {
-      stTxt[innerText] = 'Follow @' + params.follow;
-    } else {
-      if (params.mention) {
-        text.push('@' + params.mention);
-        stTxt[innerText] = 'Message @' + params.mention;
+      window[name] = function (data) {
+        cb(data);
+        endCallback();
+      };
+      script.src = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
+      document.body.appendChild(script);
+    };
+  </script>
+  <!-- Inline script tags to minimise HTTP requests -->
+  <script>
+    (function (clientId) {
+      var stBtn     = document.getElementById('st-btn'),
+          stTxt     = document.getElementById('st-text'),
+          stCount   = document.getElementById('st-count'),
+          innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
+
+      var addEvent = function (el, event, fn) {
+        if (el.addEventListener) {
+          el.addEventListener(event, fn, false);
+        } else if (el.attachEvent) {
+          el.attachEvent('on' + event, fn);
+        }
+      };
+
+      var text         = [], date,
+          accessToken  = parseParams(params.pageUrl.substr(params.pageUrl.indexOf('#') + 1))['access_token'] || docCookies.getItem('accessToken'),
+          clickHandler = function () {};
+
+      var preventDefault = function (fn) {
+        return function (e) {
+          e.preventDefault();
+          return fn.apply(this, arguments);
+        };
+      };
+
+      if (params.follow) {
+        stTxt[innerText] = 'Follow @' + params.follow;
+        if (accessToken) {
+          if (!docCookies.hasItem('accessToken')) {
+            date = new Date();
+            date.setFullYear(date.getFullYear() + 1); // One year into the future
+            docCookies.setItem('accessToken', accessToken, date, '', '', true);
+          }
+          // Need to do some checking to see if we are already following the user
+          stBtn.href = 'http://stocktwits.com/blakeembrey';
+          clickHandler = function () {
+            jsonpRequest('https://api.stocktwits.com/api/2/search/users.json?access_token=' + encodeURIComponent(accessToken) + '&q=' + encodeURIComponent(params.follow), function (data) {
+              var userId = data.results[0].id;
+              if (!userId) { /* Do some error handling */ return; }
+              jsonpRequest('https://api.stocktwits.com/api/2/friendships/create/' + userId + '.json?access_token=' + accessToken, function (data) {
+                console.log(data);
+              });
+            });
+          };
+        } else {
+          stBtn.href = 'https://api.stocktwits.com/api/2/oauth/authorize?client_id=' + clientId + '&response_type=token&redirect_uri=' + params.pageUrl + '&scope=follow_users,follow_stocks';
+          clickHandler = function () {
+            var width  = 500,
+                height = 350,
+                left   = (window.screen.availWidth - width) / 2;
+            if (top !== self) { top.location.replace(stBtn.href); }
+          }
+        }
+      } else {
+        if (params.mention) {
+          text.push('@' + params.mention);
+          stTxt[innerText] = 'Message @' + params.mention;
+        }
+        if (params.cashtag) {
+          text.push('$' + params.cashtag.toUpperCase());
+          stTxt[innerText] = 'Mention $' + params.cashtag;
+        }
+        // If there is no text content, use the site
+        if (!text.length) {
+          text.push(params.pageTitle);
+          text.push(params.pageUrl);
+        }
+        // Append to the link
+        stBtn.href += '?body=' + encodeURIComponent(text);
+        // Make a new window open over the top of the current window
+        clickHandler = function () {
+          var width  = 500,
+              height = 350,
+              left   = (window.screen.availWidth - width) / 2;
+          window.open(this.href, '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
+        }
       }
-      if (params.cashtag) {
-        text.push('$' + params.cashtag.toUpperCase());
-        stTxt[innerText] = 'Mention $' + params.cashtag;
-      }
-      // If there is no text content, use the site
-      if (!text.length) {
-        text.push(params.pageTitle);
-        text.push(params.pageUrl);
-      }
-      // Append to the link
-      stBtn.href += '?body=' + encodeURIComponent(text);
-    }
 
-
-    addEvent(stBtn, 'click', function (e) {
-      var width  = 500,
-          height = 350,
-          left   = (window.screen.availWidth - width) / 2;
-      e.preventDefault();
-      window.open(this.href, '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
-    }, false);
+      addEvent(stBtn, 'click', preventDefault(clickHandler));
+      addEvent(stCount, 'click', preventDefault(clickHandler));
+    })('6ea2b9bf9072bdb3');
   </script>
 </body>
 </html>

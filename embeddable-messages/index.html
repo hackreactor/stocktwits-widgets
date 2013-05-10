@@ -4,124 +4,57 @@
     <title>StockTwit</title>
     <style>
       body {
-        font: 12px/18px Arial,Tahoma,sans-serif;
-      }
-      ul {
-        list-style-type: none;
+        font: 14px/1.5 Arial, Tahoma, sans-serif;
         margin: 0;
-        padding: 8px 0 0 0;
-        clear: both;
-        overflow: hidden;
-      }
-      li {
-        float: left;
-        padding-left: 5px;
+        padding: 8px;
       }
       a {
         text-decoration: none;
+        color: #5774a2;
       }
-      .embedded_st-container {
-        padding: 10px 8px;
-        background-color: #f5f5f5;
-        border-radius: 5px;
-        border: 1px solid #ddddd3; /* Should be a hex code */
-        border-top: 0;
-        border-bottom-color: #bbbbbb;
-        overflow: hidden;
-      }
-      .embedded_st-container p {
-        font-size: 14px;
-        margin-left: 1px;
-      }
-      .embedded_st-modal-content {
-        height: 30px;
-        padding-top: 10px;
-        text-align: center;
-        background-color: #89130a;
-        color: white;
-      }
-      .embedded_st-modal-content:first-child {
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-      }
-      .embedded_st-modal-title {
-        vertical-align: middle;
-        font-size: 16px;
-        text-shadow: 0 -1px 0 #000;
-      }
-      .embedded_st-cancel-button {
-        cursor: pointer;
-        float: right;
-        clear: both;
-        margin: -10px 5px 0 0;
-        border: none;
-        font-size: 16px;
-        color: white;
-        padding: 10px;
-        background-color: #89130a;
-      }
-      .textarea-container {
-        padding: 0 8px 16px 0;
-      }
-      textarea.embedded_st-code {
-        width: 100%;
-        display: block;
-        resize: none;
-        border: 2px solid #999;
-        border-bottom: 1px solid #ccc;
-        border-right: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      textarea.embedded_st-code:focus {
-        outline: none;
-        border-color: #9ecaed;
-        box-shadow: 0 0 5px #9ecaed;
-      }
-      .embedded_st-header {
-        margin-left: -4px;
-      }
-      .embedded_st-dateline {
-        float: right;
-        height: 18px;
-        color: #898989;
-        margin-right: 4px;
+      a:hover {
+        text-decoration: underline;
       }
       .embedded_st-avatar {
-        position: relative;
         float: left;
-        top: 0;
         width: 50px;
         height: 50px;
-        margin-right: 10px;
-        margin-left: 10px;
-      }
-      .embedded_st-username {
-        color: #000;
-        font-size: 14px;
-        font-weight: bold;
-        padding-left: 8px;
       }
       .embedded_st-entry-title {
         line-height: 1.3;
-        font-size: 14px;
       }
-      .embedded_st-media {
-        margin-top: 25px;
-        height: 300px;
+      .embedded_st-entry-title .symbol {
+        font-weight: bold;
+      }
+      .embedded_st-main-column {
+        margin-left: 60px;
+      }
+      .embedded_st-dateline {
+        float: right;
+        color: #898989;
+      }
+      .embedded_st-username {
+        color: #000;
+        font-weight: bold;
+      }
+      /*TODO id=13455044*/
+      .embedded_st-media a {
+        display: block;
         width: 100%;
-        background-color: gray;
+        margin-top: 10px;
       }
       .embedded_st-actions {
-        padding-bottom: 10px;
-        font-size: 14px;
+        list-style-type: none;
+        margin: 0;
+        padding: 8px 0 0 0;
       }
-      .embedded_st-like-action,
-      .embedded_st-share-action,
-      .embedded_st-reply-action {
-        color: #5774a2;
+      .embedded_st-actions li {
+        display: inline;
       }
-      .embedded_st-share-action:before,
-      .embedded_st-reply-action:before {
+      .embedded_st-actions li + li {
+        padding-left: 5px;
+      }
+      .embedded_st-actions li + li:before {
         content: "\2022";
         padding-right: 5px;
         color: #898989;
@@ -129,44 +62,56 @@
     </style>
   </head>
   <body>
-    <div class="embedded_st-header">
-      <div id="embedded_st-dateline" class="embedded_st-dateline"></div>
-      <div id="embedded_st-avatar" class="embedded_st-avatar"></div>
-      <div id="embedded_st-username" class="embedded_st-username"></div>
+    <div id="embedded_st-avatar" class="embedded_st-avatar"></div>
+    <div class="embedded_st-main-column">
+      <div class="embedded_st-header">
+        <div id="embedded_st-dateline" class="embedded_st-dateline"></div>
+        <div id="embedded_st-username" class="embedded_st-username"></div>
+      </div>
+      <div class="embedded_st-entry-content">
+        <div id="embedded_st-entry-title" class="embedded_st-entry-title"></div>
+      </div>
+      <div class="embedded_st-media" id="embedded_st-media"></div>
+      <div class="embedded_st-footer">
+        <span class="embedded_st-stats">
+          <span class="embedded_st-stats-comments"></span>
+        </span>
+        <ul class="embedded_st-actions">
+          <li>
+            <a href="#" id="embedded_st-like-action">Like</a>
+          </li>
+          <li>
+            <a href="#" id="embedded_st-share-action">Share</a>
+          </li>
+          <li>
+            <a href="#" id="embedded_st-reply-action">Reply</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="embedded_st-entry-content">
-      <p id="embedded_st-entry-title" class="embedded_st-entry-title"></p>
-    </div>
-    <div class="embedded_st-footer">
-      <span class="embedded_st-stats">
-        <span class="embedded_st-stats-comments"></span>
-      </span>
-      <ul class="embedded_st-actions">
-        <li>
-          <a href="#" id="embedded_st-like-action">Like</a>
-        </li>
-        <li>
-          <a href="#" id="embedded_st-share-action">Share</a>
-        </li>
-        <li>
-          <a href="#" id="embedded_st-reply-action">Reply</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+    <script src="easyXDM.js"></script>
     <script>
-      (function() {
-      var require = function(src) {
+    (function () {
+      var socket = new easyXDM.Socket({});
+
+      window.resizeWindow = window.onresize = function () {
+        socket.postMessage(document.body.clientHeight);
+      };
+    })();
+    </script>
+    <script>
+    (function () {
+      var require = function (src) {
         var doc = document.documentElement;
         var script = document.createElement('script');
         script.src = src;
         doc.removeChild(doc.insertBefore(script, doc.firstChild));
       };
-      var JSONP = function(url, callback) {
+
+      var JSONP = function (url, callback) {
         var GLOBALCALLBACKNAME = 'st_' + Date.now() + '_' + Math.floor(Math.random()*100);
-        window[GLOBALCALLBACKNAME] = function(data){
+        window[GLOBALCALLBACKNAME] = function (data) {
           callback(data);
-          //clear timeout
           delete window[GLOBALCALLBACKNAME];
         };
         // Insert a script tag into the DOM with the URL + callback=GLOBALCALLBACKNAME
@@ -174,12 +119,13 @@
         require(url + '?callback=' + GLOBALCALLBACKNAME);
         // append to head
       };
-      var displayDate = function(timeMade) {
+
+      var displayDate = function (timeMade) {
         var date = new Date(timeMade);
           var amOrPm = date.getHours() > 11 ? 'PM' : 'AM';
           var hours = date.getHours();
-          if(amOrPm == 'AM'){
-            if(hours === 0) {
+          if (amOrPm == 'AM') {
+            if (hours === 0) {
               hours = 12;
             }
           } else {
@@ -190,32 +136,48 @@
 
           return months[date.getMonth()] + ' ' + date.getDate() + ' at ' + hours + ':' + date.getMinutes() + ' ' + amOrPm;
       };
-      var showTwit = function(messageId) {
+
+      var showTwit = function (messageId) {
         var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
         var frame = document.createElement("iframe");
-        JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function(messageInfo){
+        JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function (messageInfo) {
           document.getElementById('embedded_st-username')[innerText] = messageInfo.message.user.username;
           document.getElementById('embedded_st-dateline')[innerText] = displayDate(messageInfo.message.created_at);
           var symbols = messageInfo.message.symbols;
           var messageBody =  messageInfo.message.body;
           for(var i = 0; i < symbols.length; i++) {
-            messageBody = messageBody.replace(new RegExp('(?:^|\\s)(\\$' + symbols[i].symbol + ')(?:$|\\s)', 'g'), function(_, str){
-              return ' <a target="_blank" href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
+            messageBody = messageBody.replace(new RegExp('(?:^|\\s)(\\$' + symbols[i].symbol + ')(?:$|\\s)', 'g'), function (_, str) {
+              return ' <a target="_blank" class="symbol" href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
             });
           }
-          messageBody = messageBody.replace(/\bhttp:\/\/stks\.co\/\w+\b/g, function(str){
+          if (messageInfo.message.entities && messageInfo.message.entities.chart) {
+            (function (chart) {
+              var link  = document.createElement('a'),
+                  image = document.createElement('img');
+
+              link.href    = chart.url;
+              image.onload = window.resizeWindow;
+              image.src    = chart.thumb;
+
+              link.appendChild(image);
+              document.getElementById('embedded_st-media').appendChild(link);
+            })(messageInfo.message.entities.chart);
+          }
+          messageBody = messageBody.replace(/\bhttp:\/\/stks\.co\/\w+\b/g, function (str) {
             return ' <a target="_blank" href="' + str + '">' + str + '</a> ';
           });
           document.getElementById('embedded_st-entry-title').innerHTML = messageBody;
-          var image = document.createElement('img');
-          image.width = '50';
+          var image    = document.createElement('img');
+          image.width  = '50';
           image.height = '50';
-          image.src = messageInfo.message.user.avatar_url;
+          image.src    = messageInfo.message.user.avatar_url;
           document.getElementById('embedded_st-avatar').appendChild(image);
+          window.resizeWindow(); // Trigger a manual window resize event
         });
       }
-      showTwit(window.location.search.substring(window.location.search.indexOf('messageID=') + 10));
-      }());
+
+      showTwit(window.location.search.substr(window.location.search.indexOf('messageID=') + 10));
+    }());
     </script>
   </body>
 </html>
