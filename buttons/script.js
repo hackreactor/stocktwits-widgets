@@ -63,4 +63,4 @@
     createButton(elements[i]);
   }
 
-})(['follow', 'mention', 'cashtag']);
+})(['follow', 'mention', 'cashtag', 'count']);
