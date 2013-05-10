@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <body>
+    <script>
+      (function (clientId) {
+        var accessTokenIndex = window.location.hash.indexOf('access_token='),
+            accessToken      = ~accessTokenIndex && window.location.hash.substr(accessTokenIndex + 13);
+
+        if (accessToken) {
+          // Window opener needs to have a function that can receive the access token update
+          window.opener.accessToken(accessToken);
+          window.close();
+        } else {
+          // Redirect to StockTwits for authentication
+          window.location = 'https://api.stocktwits.com/api/2/oauth/authorize?client_id=' + clientId + '&response_type=token&redirect_uri=' + window.location.href + '&scope=follow_users,follow_stocks';
+        }
+      })('6ea2b9bf9072bdb3');
+    </script>
+  </body>
+</html>
