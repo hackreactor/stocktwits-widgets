@@ -4,7 +4,9 @@
     <title>StockTwit</title>
     <style>
       body {
-        font: 14px/1.5 Arial,Tahoma,sans-serif;
+        font: 14px/1.5 Arial, Tahoma, sans-serif;
+        margin: 0;
+        padding: 8px;
       }
       a {
         text-decoration: none;
@@ -47,7 +49,7 @@
         padding: 8px 0 0 0;
       }
       .embedded_st-actions li {
-        float: left;
+        display: inline;
       }
       .embedded_st-actions li + li {
         padding-left: 5px;
@@ -87,19 +89,29 @@
         </ul>
       </div>
     </div>
+    <script src="easyXDM.js"></script>
     <script>
-      (function() {
-      var require = function(src) {
+    (function () {
+      var socket = new easyXDM.Socket({});
+
+      window.resizeWindow = window.onresize = function () {
+        socket.postMessage(document.body.clientHeight);
+      };
+    })();
+    </script>
+    <script>
+    (function () {
+      var require = function (src) {
         var doc = document.documentElement;
         var script = document.createElement('script');
         script.src = src;
         doc.removeChild(doc.insertBefore(script, doc.firstChild));
       };
-      var JSONP = function(url, callback) {
+
+      var JSONP = function (url, callback) {
         var GLOBALCALLBACKNAME = 'st_' + Date.now() + '_' + Math.floor(Math.random()*100);
-        window[GLOBALCALLBACKNAME] = function(data){
+        window[GLOBALCALLBACKNAME] = function (data) {
           callback(data);
-          //clear timeout
           delete window[GLOBALCALLBACKNAME];
         };
         // Insert a script tag into the DOM with the URL + callback=GLOBALCALLBACKNAME
@@ -107,12 +119,13 @@
         require(url + '?callback=' + GLOBALCALLBACKNAME);
         // append to head
       };
-      var displayDate = function(timeMade) {
+
+      var displayDate = function (timeMade) {
         var date = new Date(timeMade);
           var amOrPm = date.getHours() > 11 ? 'PM' : 'AM';
           var hours = date.getHours();
-          if(amOrPm == 'AM'){
-            if(hours === 0) {
+          if (amOrPm == 'AM') {
+            if (hours === 0) {
               hours = 12;
             }
           } else {
@@ -123,38 +136,48 @@
 
           return months[date.getMonth()] + ' ' + date.getDate() + ' at ' + hours + ':' + date.getMinutes() + ' ' + amOrPm;
       };
-      var showTwit = function(messageId) {
+
+      var showTwit = function (messageId) {
         var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
         var frame = document.createElement("iframe");
-        JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function(messageInfo){
+        JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function (messageInfo) {
           document.getElementById('embedded_st-username')[innerText] = messageInfo.message.user.username;
           document.getElementById('embedded_st-dateline')[innerText] = displayDate(messageInfo.message.created_at);
           var symbols = messageInfo.message.symbols;
           var messageBody =  messageInfo.message.body;
           for(var i = 0; i < symbols.length; i++) {
-            messageBody = messageBody.replace(new RegExp('(?:^|\\s)(\\$' + symbols[i].symbol + ')(?:$|\\s)', 'g'), function(_, str){
+            messageBody = messageBody.replace(new RegExp('(?:^|\\s)(\\$' + symbols[i].symbol + ')(?:$|\\s)', 'g'), function (_, str) {
               return ' <a class="symbol" href="http://stocktwits.com/symbol/' + str.substr(1) + '">' + str + '</a> ';
             });
           }
-          if(messageInfo.message.entities.chart) {
-            document.getElementById('embedded_st-media').innerHTML =
-              '<a target="_blank" href="' + messageInfo.message.entities.chart.url + '">' +
-                '<img src="' + messageInfo.message.entities.chart.thumb + '">' +
-              '</a>';
+          if (messageInfo.message.entities && messageInfo.message.entities.chart) {
+            (function (chart) {
+              var link  = document.createElement('a'),
+                  image = document.createElement('img');
+
+              link.href    = chart.url;
+              image.onload = window.resizeWindow;
+              image.src    = chart.thumb;
+
+              link.appendChild(image);
+              document.getElementById('embedded_st-media').appendChild(link);
+            })(messageInfo.message.entities.chart);
           }
-          messageBody = messageBody.replace(/\bhttp:\/\/stks\.co\/\w+\b/g, function(str){
+          messageBody = messageBody.replace(/\bhttp:\/\/stks\.co\/\w+\b/g, function (str) {
             return ' <a href="' + str + '">' + str + '</a> ';
           });
           document.getElementById('embedded_st-entry-title').innerHTML = messageBody;
-          var image = document.createElement('img');
-          image.width = '50';
+          var image    = document.createElement('img');
+          image.width  = '50';
           image.height = '50';
-          image.src = messageInfo.message.user.avatar_url;
+          image.src    = messageInfo.message.user.avatar_url;
           document.getElementById('embedded_st-avatar').appendChild(image);
+          window.resizeWindow(); // Trigger a manual window resize event
         });
       }
-      showTwit(window.location.search.substring(window.location.search.indexOf('messageID=') + 10));
-      }());
+
+      showTwit(window.location.search.substr(window.location.search.indexOf('messageID=') + 10));
+    }());
     </script>
   </body>
 </html>
