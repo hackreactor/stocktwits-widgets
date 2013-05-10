@@ -260,12 +260,6 @@
           }
         }
       } else {
-        if (params.count) {
-          jsonpRequest("http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=http://stocktwits.com/howardlindzon", function (data) {
-            stCount[innerText] = data.totals.shares;
-            stCount.style.display = 'inline-block';
-          });
-        }
         if (params.mention) {
           text.push('@' + params.mention);
           stTxt[innerText] = 'Message @' + params.mention;
@@ -274,10 +268,16 @@
           text.push('$' + params.cashtag.toUpperCase());
           stTxt[innerText] = 'Mention $' + params.cashtag;
         }
-        // If there is no text content, use the site
+        // Share button with no params(except maybe count)
         if (!text.length) {
           text.push(params.pageTitle);
           text.push(params.pageUrl);
+          if (params.count) {
+            jsonpRequest("http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=" + encodeURIComponent(params.pageUrl), function (data) {
+              stCount[innerText] = data.totals.shares;
+              stCount.style.display = 'inline-block';
+            });
+          }
         }
         // Append to the link
         stBtn.href += '?body=' + encodeURIComponent(text);
