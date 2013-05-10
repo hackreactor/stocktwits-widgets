@@ -51,11 +51,11 @@ module.exports = function (grunt) {
 
     watch: {
       html: {
-        files: ['buttons/**/*.html', 'embeddable-messages/**/*.html'],
+        files: ['{buttons,embeddable-messages}/**/*.html'],
         tasks: ['htmlmin:dist']
       },
       uglify: {
-        files: ['buttons/**/*.js', 'embeddable-messages/**/*.js'],
+        files: ['{buttons,embeddable-messages}/**/*.js'],
         tasks: ['uglify:dist']
       }
     }
