@@ -42,9 +42,9 @@ module.exports = function (grunt) {
       dist: {
         files: {
           'dist/buttons/script.js': 'buttons/script.js',
-          'dist/embeddable-messages/easyXDM.js': 'embeddable-messages/easyXDM.js',
+          'dist/embeddable-messages/easyXDM.js': 'easyXDM/easyXDM.js',
           'dist/embeddable-messages/widget.js':
-            ['embeddable-messages/easyXDM.js', 'embeddable-messages/widget.js']
+            ['easyXDM/easyXDM.js', 'embeddable-messages/widget.js']
         }
       }
     },
