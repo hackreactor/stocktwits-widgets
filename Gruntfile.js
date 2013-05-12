@@ -18,25 +18,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Minify the HTML of any build files
-    htmlmin: {
-      dist: {
-        options: {
-          removeComments: true,
-          removeCommentsFromCDATA: true,
-          collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeRedundantAttributes: true,
-          removeOptionalTags: true
-        },
-        files: {
-          'dist/buttons/index.html': 'dist/buttons/index.html',
-          'dist/embeddable-messages/index.html': 'dist/embeddable-messages/index.html'
-        }
-      }
-    },
-
     // Concat and minify javascript files
     uglify: {
       dist: {
@@ -50,10 +31,6 @@ module.exports = function (grunt) {
     },
 
     watch: {
-      html: {
-        files: ['{buttons,embeddable-messages}/**/*.html'],
-        tasks: ['htmlmin:dist']
-      },
       uglify: {
         files: ['{buttons,embeddable-messages}/**/*.js'],
         tasks: ['uglify:dist']
@@ -61,5 +38,5 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('build', ['clean', 'copy', 'htmlmin:dist', 'uglify:dist']);
+  grunt.registerTask('build', ['clean', 'copy', 'uglify:dist']);
 };

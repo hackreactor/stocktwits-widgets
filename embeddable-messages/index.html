@@ -138,6 +138,7 @@
       };
 
       var showTwit = function (messageId) {
+        messageId = 13357309;
         var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
         var frame = document.createElement("iframe");
         JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function (messageInfo) {
@@ -175,8 +176,7 @@
           window.resizeWindow(); // Trigger a manual window resize event
         });
       }
-
-      showTwit(window.location.search.substr(window.location.search.indexOf('messageID=') + 10));
+      showTwit();
     }());
     </script>
   </body>
