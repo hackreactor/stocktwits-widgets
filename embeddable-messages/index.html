@@ -137,8 +137,14 @@
           return months[date.getMonth()] + ' ' + date.getDate() + ' at ' + hours + ':' + date.getMinutes() + ' ' + amOrPm;
       };
 
+      var getParameterByName = function(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      };
+
       var showTwit = function (messageId) {
-        messageId = 13357309;
         var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
         var frame = document.createElement("iframe");
         JSONP("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function (messageInfo) {
@@ -176,7 +182,7 @@
           window.resizeWindow(); // Trigger a manual window resize event
         });
       }
-      showTwit();
+      showTwit(getParameterByName('messageID'));
     }());
     </script>
   </body>
