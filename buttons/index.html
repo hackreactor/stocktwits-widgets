@@ -315,7 +315,7 @@
                 jsonpRequest(countUrl + pageUrl, function (data) {
                   var count = data.totals.shares;
                   stCountVal[innerText] = count;
-                  docCookies.setItem(pageUrl, 100, 60*60);
+                  docCookies.setItem(pageUrl, count, 60*60);
                 });
               } else {
                 stCountVal[innerText] = docCookies.getItem(pageUrl);
