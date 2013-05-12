@@ -80,6 +80,7 @@
       }
       .st-count {
         position: relative;
+        *display: inline;
         display: none;
         height: 18px;
         max-width: 100%;
@@ -133,7 +134,7 @@
       <a class="st-count" id="st-count" href="https://stocktwits.com/widgets/share" target="_blank">
         <i></i>
         <u></u>
-        <div class="widget-val">99</div>
+        <div class="widget-val" id="st-count-val"></div>
       </a>
     </span>
 
@@ -257,10 +258,11 @@
     <!-- Inline script tags to minimise HTTP requests -->
     <script>
       (function () {
-        var stBtn     = document.getElementById('st-btn'),
-            stTxt     = document.getElementById('st-text'),
-            stCount   = document.getElementById('st-count'),
-            innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
+        var stBtn      = document.getElementById('st-btn'),
+            stTxt      = document.getElementById('st-text'),
+            stCount    = document.getElementById('st-count'),
+            stCountVal = document.getElementById('st-count-val'),
+            innerText  = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
 
         var addEvent = function (el, event, fn) {
           if (el.addEventListener) {
@@ -307,10 +309,18 @@
             text.push(params.pageUrl);
 
             if (params.count) {
-              jsonpRequest('http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=' + encodeURIComponent(params.pageUrl), function (data) {
-                stCount[innerText] = data.totals.shares;
-                stCount.style.display = 'inline-block';
-              });
+              var countUrl = 'http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=',
+                  pageUrl  = encodeURIComponent(params.pageUrl);
+              if (!docCookies.getItem(pageUrl)) {
+                jsonpRequest(countUrl + pageUrl, function (data) {
+                  var count = data.totals.shares;
+                  stCountVal[innerText] = count;
+                  docCookies.setItem(pageUrl, count, 60*60);
+                });
+              } else {
+                stCountVal[innerText] = docCookies.getItem(pageUrl);
+              }
+              stCount.style.display = 'inline-block';
             }
           }
           // Append to the link
