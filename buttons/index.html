@@ -153,6 +153,38 @@
       var params = parseParams(window.location.search.slice(1));
     </script>
 
+    <!-- Do cross-domain requests (can't view a response though) -->
+    <script>
+      var crossDomainRequest = function (url, params, method) {
+        var iframe = document.createElement('iframe'),
+            form   = document.createElement('form'),
+            name   = 'stockTwitsRequest' + ('' + Math.random()).substr(2),
+            input;
+
+        document.body.appendChild(iframe);
+
+        form.target               = name;
+        form.action               = url;
+        form.method               = method || 'post';
+        form.style.display        = 'none';
+        iframe.style.display      = 'none';
+        iframe.contentWindow.name = name;
+
+        if (params && typeof params === 'object') {
+          for (var name in params) {
+            input       = document.createElement('input');
+            input.type  = 'hidden';
+            input.name  = name;
+            input.value = params[name];
+            form.appendChild(input);
+          }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+      };
+    </script>
+
     <!-- Global domain URL -->
     <script>var AUTH_URL = '/auth/index.html';</script>
 
@@ -239,9 +271,10 @@
         jsonpRequest('https://api.stocktwits.com/api/2/search/users.json?access_token=' + encodeURIComponent(accessToken) + '&q=' + encodeURIComponent(params.follow), function (data) {
           var userId = data.results && data.results[0].id;
           if (!userId) { /* Do some error handling */ return; }
-          jsonpRequest('https://api.stocktwits.com/api/2/friendships/create/' + userId + '.json?access_token=' + encodeURIComponent(accessToken), function (data) {
-            console.log(data);
+          crossDomainRequest('https://api.stocktwits.com/api/2/friendships/create/' + userId + '.json', {
+            'access_token': encodeURIComponent(accessToken)
           });
+          document.getElementById('st-btn').className += ' active';
         });
       };
 
