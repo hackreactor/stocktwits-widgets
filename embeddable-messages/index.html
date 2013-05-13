@@ -119,6 +119,38 @@
     <!-- Global domain URL -->
     <script>var AUTH_URL = '/auth/index.html';</script>
 
+    <!-- Do cross-domain requests (can't view a response though) -->
+    <script>
+      var crossDomainRequest = function (url, params, method) {
+        var iframe = document.createElement('iframe'),
+            form   = document.createElement('form'),
+            name   = 'stockTwitsRequest' + ('' + Math.random()).substr(2),
+            input;
+
+        document.body.appendChild(iframe);
+
+        form.target               = name;
+        form.action               = url;
+        form.method               = method || 'post';
+        form.style.display        = 'none';
+        iframe.style.display      = 'none';
+        iframe.contentWindow.name = name;
+
+        if (params && typeof params === 'object') {
+          for (var name in params) {
+            input       = document.createElement('input');
+            input.type  = 'hidden';
+            input.name  = name;
+            input.value = params[name];
+            form.appendChild(input);
+          }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+      };
+    </script>
+
     <!-- Little cookie library from MDN (mdn.io/cookie) -->
     <script>
       /*\
@@ -292,10 +324,15 @@
     </script>
     <!-- Scripts to do authentication for following users -->
     <script>
+      var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
       window.likeMessage = function (accessToken) {
-        jsonpRequest('https://api.stocktwits.com/api/2/messages/like.json?access_token=' + encodeURIComponent(accessToken) + '&q=' + encodeURIComponent(params.id), function (data) {
-          // change iframe view to unlike and change event handler on clickLike
-        });
+        if(clickLike[innerText] === 'Like') {
+          crossDomainRequest('https://api.stocktwits.com/api/2/messages/like.json?access_token=' + encodeURIComponent(accessToken) + '&id=' + encodeURIComponent(params.messageID));
+          clickLike[innerText] = 'Unlike';
+        } else {
+          crossDomainRequest('https://api.stocktwits.com/api/2/messages/unlike.json?access_token=' + encodeURIComponent(accessToken) + '&id=' + encodeURIComponent(params.messageID));
+          clickLike[innerText] = 'Like';
+        }
       };
 
       window.accessToken = function (accessToken) {
