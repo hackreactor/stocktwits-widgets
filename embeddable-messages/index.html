@@ -303,7 +303,6 @@
         };
 
         var preventDefault = function (fn) {
-          console.log(fn)
           return function (e) {
             e.preventDefault();
             return fn.apply(this, arguments);
