@@ -59,6 +59,12 @@
         padding-right: 5px;
         color: #898989;
       }
+      li .stocktwits-share-button {
+        vertical-align: middle;
+        margin-bottom: 0px;
+        float: right;
+        width: 64px;
+      }
     </style>
   </head>
   <body>
@@ -78,13 +84,19 @@
         </span>
         <ul class="embedded_st-actions">
           <li>
-            <a href="#" id="embedded_st-like-action" target="_blank">Like</a>
+            <a href="https://stocktwits.com/widgets/share" id="embedded_st-like-action" target="_blank">Like</a>
           </li>
           <li>
-            <a href="#" id="embedded_st-share-action" target="_blank">Share</a>
+            <a href="https://stocktwits.com/widgets/share" id="embedded_st-share-action" target="_blank">Share</a>
           </li>
           <li>
-            <a href="#" id="embedded_st-reply-action" target="_blank">Reply</a>
+            <a href="https://stocktwits.com/widgets/share" id="embedded_st-reply-action" target="_blank">Reply</a>
+          </li>
+          <li>
+            <!-- Follow button -->
+            <a href="http://stocktwits.com/blakeembrey" class="stocktwits-share-button" data-follow="blakeembrey">Follow</a>
+            <!-- Embeddable StockTwits buttons -->
+            <script>(function(d){var b=d.body,s=d.createElement('script');s.src='/dist/buttons/script.js';b.appendChild(s);})(document);</script>
           </li>
         </ul>
       </div>
@@ -195,6 +207,11 @@
       };
     </script>
     <script>
+
+    var clickLike    = document.getElementById('embedded_st-like-action'),
+        clickShare   = document.getElementById('embedded_st-share-action'),
+        clickReply   = document.getElementById('embedded_st-reply-action');
+
     (function () {
       var require = function (src) {
         var doc = document.documentElement;
@@ -264,6 +281,9 @@
           image.src    = messageInfo.message.user.avatar_url;
           document.getElementById('embedded_st-avatar').appendChild(image);
           window.resizeWindow(); // Trigger a manual window resize event
+
+          clickReply.href = clickReply.href + '?body=' + encodeURIComponent('@' + messageInfo.message.user.username) + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
+          clickShare.href = clickShare.href + '?body=' + encodeURIComponent('"@' + messageInfo.message.user.username + ' ' + messageInfo.message.body + '"') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
         });
       };
 
@@ -289,11 +309,6 @@
     <!-- Inline script tags to minimise HTTP requests -->
     <script>
       (function () {
-
-        var clickLike    = document.getElementById('embedded_st-like-action'),
-            clickShare   = document.getElementById('embedded_st-share-action'),
-            clickReply   = document.getElementById('embedded_st-reply-action');
-
         var addEvent = function (el, event, fn) {
           if (el.addEventListener) {
             el.addEventListener(event, fn, false);
@@ -310,11 +325,8 @@
         };
 
         var accessToken = docCookies.getItem('accessToken'),
-            href        = 'https://stocktwits.com/widgets/share?body=',
             clickHandler, likeClickHandler;
 
-        clickReply.href = href + encodeURIComponent('@' + params.username) + '&in_reply_to_message_id=' + encodeURIComponent(params.messageID);
-        clickShare.href = href + encodeURIComponent('"@' + params.username + ' ' + params.message + '"') + '&in_reply_to_message_id=' + encodeURIComponent(params.messageID);
 
         // Make a new window open over the top of the current window
         clickHandler = clickHandler || function () {
