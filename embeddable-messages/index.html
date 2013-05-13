@@ -163,24 +163,6 @@
       };
     </script>
 
-    <!-- Scripts to do authentication for following users -->
-    <script>
-      window.followUser  = function (accessToken) {
-        jsonpRequest('https://api.stocktwits.com/api/2/search/users.json?access_token=' + encodeURIComponent(accessToken) + '&q=' + encodeURIComponent(params.username), function (data) {
-          var userId = data.results && data.results[0].id;
-          if (!userId) { /* Do some error handling */ return; }
-          jsonpRequest('https://api.stocktwits.com/api/2/friendships/create/' + userId + '.json?access_token=' + encodeURIComponent(accessToken), function (data) {
-            console.log(data);
-          });
-        });
-      };
-
-      window.accessToken = function (accessToken) {
-        var date = new Date();
-        date.setFullYear(date.getFullYear() + 1); // One year into the future
-        docCookies.setItem('accessToken', accessToken, date, '', '', true);
-      };
-    </script>
 
     <script src="/easyXDM/easyXDM.js"></script>
     <script>
@@ -288,14 +270,29 @@
       showTwit(getParameterByName('messageID'));
     }());
     </script>
+    <!-- Scripts to do authentication for following users -->
+    <script>
+      window.likeMessage = function (accessToken) {
+        jsonpRequest('https://api.stocktwits.com/api/2/messages/like.json?access_token=' + encodeURIComponent(accessToken) + '&q=' + encodeURIComponent(params.id), function (data) {
+          // change iframe view to unlike and change event handler on clickLike
+        });
+      };
+
+      window.accessToken = function (accessToken) {
+        var date = new Date();
+        date.setFullYear(date.getFullYear() + 1); // One year into the future
+        docCookies.setItem('accessToken', accessToken, date, '', '', true);
+
+        window.likeMessage(accessToken);
+      };
+    </script>
     <!-- Inline script tags to minimise HTTP requests -->
     <script>
       (function () {
 
-        var clickLike     = document.getElementById('embedded_st-like-action'),
-            clickShare     = document.getElementById('embedded_st-share-action'),
-            clickReply   = document.getElementById('embedded_st-reply-action'),
-            innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
+        var clickLike    = document.getElementById('embedded_st-like-action'),
+            clickShare   = document.getElementById('embedded_st-share-action'),
+            clickReply   = document.getElementById('embedded_st-reply-action');
 
         var addEvent = function (el, event, fn) {
           if (el.addEventListener) {
@@ -305,34 +302,39 @@
           }
         };
 
-        var accessToken = docCookies.getItem('accessToken'),
-            href        = 'https://stocktwits.com/widgets/share?body=',
-            clickHandler, likeClickHandler;
-
         var preventDefault = function (fn) {
+          console.log(fn)
           return function (e) {
             e.preventDefault();
             return fn.apply(this, arguments);
           };
         };
 
+        var accessToken = docCookies.getItem('accessToken'),
+            href        = 'https://stocktwits.com/widgets/share?body=',
+            clickHandler, likeClickHandler;
+
+
         clickReply.href = href + encodeURIComponent('@' + params.username);
         clickShare.href = href + encodeURIComponent('"@' + params.username + ' ' + params.message + '"');
 
-        if (accessToken) {
-          // Need to do some checking to see if we already like the message
-          likeClickHandler = function () {
-            window.followUser(accessToken);
-          };
-        } else {
-          clickLike.href = AUTH_URL;
-        }
         // Make a new window open over the top of the current window
         clickHandler = clickHandler || function () {
           var width  = 500,
               height = 350,
               left   = (window.screen.availWidth - width) / 2;
           window.open(this.href, '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
+        };
+
+        likeClickHandler = function () {
+          // Need to do some checking to see if we already like the message
+          if (docCookies.getItem('accessToken')) {
+            var accessToken = docCookies.getItem('accessToken');
+            window.likeMessage(accessToken);
+          } else {
+            clickLike.href = AUTH_URL;
+            clickHandler.call(this);
+          }
         };
 
         addEvent(clickShare, 'click', preventDefault(clickHandler));
