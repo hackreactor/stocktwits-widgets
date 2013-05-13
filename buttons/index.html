@@ -229,7 +229,7 @@
           endCallback();
         };
         script.src = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
-        document.body.appendChild(script);
+        document.body.removeChild(document.body.appendChild(script));
       };
     </script>
 
@@ -284,7 +284,7 @@
         };
 
         if (params.follow) {
-          stTxt[innerText] = 'Follow @' + params.follow;
+          stTxt[innerText] = 'Follow' + (params['show-user'] ? ' @' + params.follow : '');
           if (accessToken) {
             // Need to do some checking to see if we are already following the user
             stBtn.href = 'http://stocktwits.com/blakeembrey';
@@ -297,7 +297,7 @@
         } else {
           if (params.mention) {
             text.push('@' + params.mention);
-            stTxt[innerText] = 'Message @' + params.mention;
+            stTxt[innerText] = 'Message' + (params['show-user'] ? ' @' + params.follow : '');
           }
           if (params.cashtag) {
             text.push('$' + params.cashtag.toUpperCase());
@@ -324,7 +324,7 @@
             }
           }
           // Append to the link
-          stBtn.href += '?body=' + encodeURIComponent(text);
+          stBtn.href += '?body=' + encodeURIComponent(text.join(' '));
         }
 
         // Make a new window open over the top of the current window

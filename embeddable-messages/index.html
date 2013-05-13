@@ -163,8 +163,8 @@
       };
     </script>
 
-
     <script src="/easyXDM/easyXDM.js"></script>
+
     <script>
     (function () {
       var socket = new easyXDM.Socket({});
@@ -174,7 +174,7 @@
       };
     })();
     </script>
-        <!-- JSONP request method -->
+    <!-- JSONP request method -->
     <script>
       var jsonpRequest = function (url, cb) {
         var name    = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
@@ -246,6 +246,7 @@
                   image = document.createElement('img');
 
               link.href    = chart.url;
+              link.target  = '_blank';
               image.onload = window.resizeWindow;
               image.src    = chart.thumb;
 
@@ -263,7 +264,6 @@
           image.src    = messageInfo.message.user.avatar_url;
           document.getElementById('embedded_st-avatar').appendChild(image);
           window.resizeWindow(); // Trigger a manual window resize event
-
         });
       };
 
@@ -313,9 +313,8 @@
             href        = 'https://stocktwits.com/widgets/share?body=',
             clickHandler, likeClickHandler;
 
-
-        clickReply.href = href + encodeURIComponent('@' + params.username);
-        clickShare.href = href + encodeURIComponent('"@' + params.username + ' ' + params.message + '"');
+        clickReply.href = href + encodeURIComponent('@' + params.username) + '&in_reply_to_message_id=' + encodeURIComponent(params.messageID);
+        clickShare.href = href + encodeURIComponent('"@' + params.username + ' ' + params.message + '"') + '&in_reply_to_message_id=' + encodeURIComponent(params.messageID);
 
         // Make a new window open over the top of the current window
         clickHandler = clickHandler || function () {
