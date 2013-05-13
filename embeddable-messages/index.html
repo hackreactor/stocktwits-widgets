@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>StockTwit</title>
+    <meta charset="UTF-8">
     <style>
       body {
         font: 14px/1.5 Arial, Tahoma, sans-serif;
@@ -51,17 +52,12 @@
       .embedded_st-actions li {
         display: inline;
       }
-      .embedded_st-actions li + li {
-        padding-left: 5px;
-      }
-      .embedded_st-actions li + li:before {
-        content: "\2022";
-        padding-right: 5px;
+      .embedded_st-actions i {
         color: #898989;
       }
-      li .stocktwits-share-button {
+      li .share-button {
+        display: inline-block;
         vertical-align: middle;
-        margin-bottom: 0px;
         float: right;
         width: 64px;
       }
@@ -85,18 +81,22 @@
         <ul class="embedded_st-actions">
           <li>
             <a href="https://stocktwits.com/widgets/share" id="embedded_st-like-action" target="_blank">Like</a>
+            <i>•</i>
           </li>
           <li>
             <a href="https://stocktwits.com/widgets/share" id="embedded_st-share-action" target="_blank">Share</a>
+            <i>•</i>
           </li>
           <li>
             <a href="https://stocktwits.com/widgets/share" id="embedded_st-reply-action" target="_blank">Reply</a>
           </li>
           <li>
-            <!-- Follow button -->
-            <a href="http://stocktwits.com/blakeembrey" class="stocktwits-share-button" data-follow="blakeembrey">Follow</a>
-            <!-- Embeddable StockTwits buttons -->
-            <script>(function(d){var b=d.body,s=d.createElement('script');s.src='/dist/buttons/script.js';b.appendChild(s);})(document);</script>
+            <div class="share-button">
+              <!-- Follow button -->
+              <a href="http://stocktwits.com/blakeembrey" class="stocktwits-share-button" data-follow="blakeembrey">Follow</a>
+              <!-- Embeddable StockTwits buttons -->
+              <script>(function(d){var b=d.body,s=d.createElement('script');s.src='/dist/buttons/script.js';b.appendChild(s);})(document);</script>
+            </div>
           </li>
         </ul>
       </div>
