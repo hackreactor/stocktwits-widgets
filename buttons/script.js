@@ -47,7 +47,7 @@
 
     var queryString = generateQueryString(query);
 
-    iframe.src       = 'buttons/index.html?' + queryString;
+    iframe.src       = '/buttons/index.html?' + queryString;
     iframe.scrolling = 0;
     iframe.width     = 180;
     iframe.height    = 20;
