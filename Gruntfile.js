@@ -3,7 +3,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
   grunt.initConfig({
 
@@ -21,9 +20,6 @@ module.exports = function (grunt) {
     // Concat and minify javascript files
     uglify: {
       dist: {
-        options: {
-          sourceMap: 'dist/embeddable-messages/widget.js.map'
-        },
         files: {
           'dist/buttons/script.js': 'buttons/script.js',
           'dist/embeddable-messages/easyXDM.js': 'easyXDM/easyXDM.js',
