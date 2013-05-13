@@ -32,7 +32,6 @@
         background: -o-linear-gradient(#fff, #999);
         background: linear-gradient(#fff, #999);
       }
-
       body {
         font: 12px/18px Arial, Tahoma, sans-serif;
       }
@@ -117,13 +116,10 @@
         margin-right: 4px;
       }
       .embedded_st-avatar {
-        position: relative;
         float: left;
-        top: 0;
         width: 50px;
         height: 50px;
         margin-right: 10px;
-        margin-left: 10px;
       }
       .embedded_st-username {
         color: #000;
@@ -194,9 +190,7 @@
             </ul>
           </div>
       </div>
-      <script src="script.js"></script>
       <script type="text/javascript">
-        _ST.showTwit(13357309);
         function generateShareCode(messageId) {
           var html = '<blockquote id="' + messageId + '" class="stocktwit-twit"><p>'
                     + document.getElementsByClassName('embedded_st-username')[0].innerText + '</p>'

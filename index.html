@@ -6,18 +6,20 @@
   </head>
   <body>
     <!-- Share page button -->
-    <a href="https://stocktwits.com/widgets/share" class="stocktwits-share-button">Share</a>
+    <a href="http://stocktwits.com/widgets/share" class="stocktwits-share-button">Share</a>
+    <!-- Share page with count button -->
+    <a href="http://stocktwits.com/widgets/share" class="stocktwits-share-button" data-count="true">Share</a>
     <!-- Follow button -->
-    <a href="https://stocktwits.com/widgets/share" class="stocktwits-share-button" data-follow="blakeembrey">Follow</a>
+    <a href="http://stocktwits.com/blakeembrey" class="stocktwits-share-button" data-follow="blakeembrey">Follow</a>
     <!-- Cashtag -->
-    <a href="https://stocktwits.com/widgets/share?body=$AAPL" class="stocktwits-share-button" data-cashtag="AAPL">Share $AAPL</a>
+    <a href="http://stocktwits.com/widgets/share?body=$AAPL" class="stocktwits-share-button" data-cashtag="AAPL">Share $AAPL</a>
     <!-- Mention -->
-    <a href="https://stocktwits.com/widgets/share?body=@blakeembrey" class="stocktwits-share-button" data-mention="blakeembrey">Mention @blakeembrey</a>
+    <a href="http://stocktwits.com/widgets/share?body=@blakeembrey" class="stocktwits-share-button" data-mention="blakeembrey">Mention @blakeembrey</a>
+    <!-- Embeddable StockTwits buttons -->
+    <script>(function(d){var b=d.body,s=d.createElement('script');s.src='dist/buttons/script.js';b.appendChild(s);})(document);</script>
 
-    <script>(function(d){var b=d.getElementsByTagName('body')[0],s=d.createElement('script');s.src=/*'//example.com/script.js'*/'buttons/script.js';b.appendChild(s);})(document);</script>
-
-    <!--  Embedded Twit Modal -->
-    <blockquote data-id="13357309" class="stocktwit-twit"><p>LDrogen</p>May 2 at 11:52 AM</p><img src="http://avatars.stocktwits.net/production/78/thumb-1265425279.png"></p>Expectations for LinkedIn <a href="http://stocktwits.com/symbol/LNKD">$LNKD</a> are real high, but if they hit 'em will be a strong signal 4 future growth <a href="http://stks.co/sAuf">http://stks.co/sAuf</a>
-    </p><script>(function(d){var b=d.getElementsByTagName('body')[0],s=d.createElement('script');s.src=/*'//example.com/script.js'*/'embeddable-messages/widget.js';b.appendChild(s);})(document);</script></blockquote>
+    <!--  Embedded StockTwits Quote -->
+    <blockquote data-id="13455044" data-username="LDrogen" class="stocktwit-twit"><p>LDrogen</p><p>May 2 at 11:52 AM</p><img src="http://avatars.stocktwits.net/production/78/thumb-1265425279.png"></img><p class="message">Expectations for LinkedIn <a href="http://stocktwits.com/symbol/LNKD">$LNKD</a> are real high, but if they hit 'em will be a strong signal 4 future growth <a href="http://stks.co/sAuf">http://stks.co/sAuf</a></p></blockquote>
+    <script>(function(d){var b=d.body,s=d.createElement('script');s.src='dist/embeddable-messages/widget.js';b.appendChild(s);})(document);</script>
   </body>
 </html>

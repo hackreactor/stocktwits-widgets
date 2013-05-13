@@ -3,7 +3,7 @@
     return Array.prototype.slice.call(object, from || 0);
   };
 
-  var getElementsByClassName; // Function to get class names
+  var getElementsByClassName; // Function to get elements by class names
 
   if (document.getElementsByClassName) {
     getElementsByClassName = function (className) {
@@ -45,9 +45,7 @@
     query.pageUrl   = window.location.href;
     query.pageTitle = document.title;
 
-    var queryString = generateQueryString(query);
-
-    iframe.src       = 'buttons/index.html?' + queryString;
+    iframe.src       = '/buttons/index.html?' + generateQueryString(query);
     iframe.scrolling = 0;
     iframe.width     = 180;
     iframe.height    = 20;
@@ -63,4 +61,4 @@
     createButton(elements[i]);
   }
 
-})(['follow', 'mention', 'cashtag']);
+})(['follow', 'mention', 'cashtag', 'count', 'show-user']);
