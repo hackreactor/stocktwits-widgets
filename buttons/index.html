@@ -65,6 +65,16 @@
         -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,0.1);
         box-shadow: inset 0 3px 5px rgba(0,0,0,0.1);
       }
+      .active {
+        color: #888;
+        background: #eee;
+        border: 1px solid #ccc;
+      }
+      .active .st-icon {
+        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+        filter: alpha(opacity=50);
+        opacity: 0.5;
+      }
       .st-icon {
         width: 16px;
         height: 16px;
@@ -267,24 +277,58 @@
 
     <!-- Scripts to do authentication for following users -->
     <script>
-      window.followUser  = function (accessToken) {
-        jsonpRequest('https://api.stocktwits.com/api/2/search/users.json?access_token=' + encodeURIComponent(accessToken) + '&q=' + encodeURIComponent(params.follow), function (data) {
-          var userId = data.results && data.results[0].id;
-          if (!userId) { /* Do some error handling */ return; }
-          crossDomainRequest('https://api.stocktwits.com/api/2/friendships/create/' + userId + '.json', {
-            'access_token': encodeURIComponent(accessToken)
+      window.addEvent = function (el, event, fn) {
+        if (el.addEventListener) {
+          el.addEventListener(event, fn, false);
+        } else if (el.attachEvent) {
+          el.attachEvent('on' + event, fn);
+        }
+      };
+
+      window.preventDefault = function (fn) {
+        return function (e) {
+          e && e.preventDefault();
+          return fn.apply(this, arguments);
+        };
+      };
+
+      window.followUser  = function () {
+        var stBtn  = document.getElementById('st-btn'),
+            userId = stBtn.getAttribute('data-user-id');
+
+        var changeFollow = function () {
+          var following = !!stBtn.getAttribute('data-following');
+
+          crossDomainRequest('https://api.stocktwits.com/api/2/friendships/' + (following ? 'destroy' : 'create') + '/' + userId + '.json', {
+            'access_token': docCookies.getItem('accessToken')
           });
-          document.getElementById('st-btn').className += ' active';
+
+          if (following) {
+            stBtn.className = stBtn.className.replace(/(?:^| )active(?:$| )/, '');
+            stBtn.removeAttribute('data-following');
+          } else {
+            stBtn.className += ' active';
+            stBtn.setAttribute('data-following', true);
+          }
+        };
+
+        if (userId) { return changeFollow(); }
+
+        jsonpRequest('https://api.stocktwits.com/api/2/search/users.json?access_token=' + encodeURIComponent(docCookies.getItem('accessToken')) + '&q=' + encodeURIComponent(params.follow), function (data) {
+          userId = data.results && data.results[0].id;
+          if (!userId) { /* Do some error handling */ return; }
+          stBtn.setAttribute('data-user-id', userId);
+          changeFollow();
         });
       };
 
       window.accessToken = function (accessToken) {
         var date = new Date();
         date.setFullYear(date.getFullYear() + 1); // One year into the future
-        docCookies.setItem('accessToken', accessToken, date, '', '', true);
+        docCookies.setItem('accessToken', accessToken, date, '/');
 
         // If this is happening, it is probably because we want to follow the user
-        params.follow && window.followUser(accessToken);
+        params.follow && window.followUser();
       };
     </script>
 
@@ -297,36 +341,27 @@
             stCountVal = document.getElementById('st-count-val'),
             innerText  = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
 
-        var addEvent = function (el, event, fn) {
-          if (el.addEventListener) {
-            el.addEventListener(event, fn, false);
-          } else if (el.attachEvent) {
-            el.attachEvent('on' + event, fn);
-          }
-        };
-
         var text        = [],
             accessToken = docCookies.getItem('accessToken'),
-            clickHandler;
+            clickHandler,
+            regularClickHandler;
 
-        var preventDefault = function (fn) {
-          return function (e) {
-            e.preventDefault();
-            return fn.apply(this, arguments);
-          };
+        regularClickHandler = function () {
+          var width  = 500,
+              height = 350,
+              left   = (window.screen.availWidth - width) / 2;
+          window.open(this.href, '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
         };
 
         if (params.follow) {
           stTxt[innerText] = 'Follow' + (params['show-user'] ? ' @' + params.follow : '');
-          if (accessToken) {
-            // Need to do some checking to see if we are already following the user
-            stBtn.href = 'http://stocktwits.com/blakeembrey';
-            clickHandler = function () {
-              window.followUser(accessToken);
-            };
-          } else {
-            stBtn.href = AUTH_URL;
-          }
+          stBtn.href = AUTH_URL;
+          clickHandler = function () {
+            if (docCookies.hasItem('accessToken')) {
+              return window.followUser();
+            }
+            regularClickHandler.call(this);
+          };
         } else {
           if (params.mention) {
             text.push('@' + params.mention);
@@ -361,12 +396,7 @@
         }
 
         // Make a new window open over the top of the current window
-        clickHandler = clickHandler || function () {
-          var width  = 500,
-              height = 350,
-              left   = (window.screen.availWidth - width) / 2;
-          window.open(this.href, '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
-        };
+        clickHandler = clickHandler || regularClickHandler;
 
         addEvent(stBtn, 'click', preventDefault(clickHandler));
         addEvent(stCount, 'click', preventDefault(clickHandler));

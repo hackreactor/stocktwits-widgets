@@ -240,9 +240,9 @@
     </script>
     <script>
 
-    var clickLike    = document.getElementById('embedded_st-like-action'),
-        clickShare   = document.getElementById('embedded_st-share-action'),
-        clickReply   = document.getElementById('embedded_st-reply-action');
+    var clickLike  = document.getElementById('embedded_st-like-action'),
+        clickShare = document.getElementById('embedded_st-share-action'),
+        clickReply = document.getElementById('embedded_st-reply-action');
 
     (function () {
       var require = function (src) {
@@ -325,7 +325,8 @@
     <!-- Scripts to do authentication for following users -->
     <script>
       var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
-      window.likeMessage = function (accessToken) {
+      window.likeMessage = function () {
+        var accessToken = docCookies.setItem('accessToken');
         if(clickLike[innerText] === 'Like') {
           crossDomainRequest('https://api.stocktwits.com/api/2/messages/like.json?access_token=' + encodeURIComponent(accessToken) + '&id=' + encodeURIComponent(params.messageID));
           clickLike[innerText] = 'Unlike';
@@ -338,9 +339,9 @@
       window.accessToken = function (accessToken) {
         var date = new Date();
         date.setFullYear(date.getFullYear() + 1); // One year into the future
-        docCookies.setItem('accessToken', accessToken, date, '', '', true);
+        docCookies.setItem('accessToken', accessToken, date, '/');
 
-        window.likeMessage(accessToken);
+        window.likeMessage();
       };
     </script>
     <!-- Inline script tags to minimise HTTP requests -->
@@ -375,13 +376,11 @@
 
         likeClickHandler = function () {
           // Need to do some checking to see if we already like the message
-          if (docCookies.getItem('accessToken')) {
-            var accessToken = docCookies.getItem('accessToken');
-            window.likeMessage(accessToken);
-          } else {
-            clickLike.href = AUTH_URL;
-            clickHandler.call(this);
+          if (docCookies.hasItem('accessToken')) {
+            return window.likeMessage();
           }
+          clickLike.href = AUTH_URL;
+          clickHandler.call(this);
         };
 
         addEvent(clickShare, 'click', preventDefault(clickHandler));
