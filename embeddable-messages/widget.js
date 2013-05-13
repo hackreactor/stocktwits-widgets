@@ -5,6 +5,13 @@
     return Array.prototype.slice.call(object, from || 0);
   };
 
+  var getParameterByName = function(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  };
+
   var getElementsByClassName; // Function to get class names
 
   if (document.getElementsByClassName) {
@@ -26,10 +33,12 @@
   }
 
   var createMessage = function (element) {
-    var messageId = parseInt(element.getAttribute('data-id'), 10);
+    var messageId = parseInt(element.getAttribute('data-id'));
+    var username = element.getAttribute('data-username');
+    var message = element.getElementsByClassName('message')[0].innerText;
 
     new easyXDM.Socket({
-      remote: 'embeddable-messages/index.html?messageID=' + messageId,
+      remote: 'embeddable-messages/index.html?messageID=' + messageId + '&username=' + username + '&message=' + message,
       container: element,
       onMessage: function (height) {
         iframe.height = height;
