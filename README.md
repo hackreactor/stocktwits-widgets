@@ -27,4 +27,4 @@ content more interactive and more deeply integrated with StockTwits.
 5. **Cross-Domain Post Requests in IE7**: In order to support IE7, we POST to an
    iFrame in order to do cross-domain POST requests without the use of CORS.
 
-Feel free to check out the final product [here](http://www.hackreactor.github.io/stocktwits-widgets)
+Feel free to check out the final product [here](http://hackreactor.github.io/stocktwits-widgets)
