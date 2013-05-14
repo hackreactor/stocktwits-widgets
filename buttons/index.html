@@ -150,7 +150,7 @@
 
     <!-- Emulate what can be done server side anyway -->
     <script>
-      var parseParams = function (string) {
+      var params = (function (string) {
         var params = {},
             query  = string.split('&'),
             hash;
@@ -159,46 +159,9 @@
           params[hash[0]] = decodeURIComponent(hash[1]);
         }
         return params;
-      };
-      var params = parseParams(window.location.search.slice(1));
+      })(window.location.search.slice(1));
     </script>
 
-    <!-- Do cross-domain requests (can't view a response though) -->
-    <script>
-      var crossDomainRequest = function (url, params, method) {
-        var iframe = document.createElement('iframe'),
-            form   = document.createElement('form'),
-            name   = 'stockTwitsRequest' + ('' + Math.random()).substr(2),
-            input;
-
-        document.body.appendChild(iframe);
-
-        form.target               = name;
-        form.action               = url;
-        form.method               = method || 'post';
-        form.style.display        = 'none';
-        iframe.style.display      = 'none';
-        iframe.contentWindow.name = name;
-
-        if (params && typeof params === 'object') {
-          for (var name in params) {
-            input       = document.createElement('input');
-            input.type  = 'hidden';
-            input.name  = name;
-            input.value = params[name];
-            form.appendChild(input);
-          }
-        }
-
-        document.body.appendChild(form);
-        form.submit();
-      };
-    </script>
-
-    <!-- Global domain URL -->
-    <script>var AUTH_URL = '/auth/index.html';</script>
-
-    <!-- Little cookie library from MDN (mdn.io/cookie) -->
     <script>
       /*\
       |*|
@@ -254,8 +217,38 @@
       };
     </script>
 
-    <!-- JSONP request method -->
     <script>
+      // Doing cross domain requests using iframes (no ability to see success though)
+      var crossDomainRequest = function (url, params, method) {
+        var iframe = document.createElement('iframe'),
+            form   = document.createElement('form'),
+            name   = 'stockTwitsRequest' + ('' + Math.random()).substr(2),
+            input;
+
+        document.body.appendChild(iframe);
+
+        form.target               = name;
+        form.action               = url;
+        form.method               = method || 'post';
+        form.style.display        = 'none';
+        iframe.style.display      = 'none';
+        iframe.contentWindow.name = name;
+
+        if (params && typeof params === 'object') {
+          for (var name in params) {
+            input       = document.createElement('input');
+            input.type  = 'hidden';
+            input.name  = name;
+            input.value = params[name];
+            form.appendChild(input);
+          }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+      };
+
+      // Create a JSONP request to grab data cross-domain
       var jsonpRequest = function (url, cb) {
         var name    = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
             script  = document.createElement('script'),
@@ -273,11 +266,9 @@
         script.src = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
         document.body.removeChild(document.body.appendChild(script));
       };
-    </script>
 
-    <!-- Scripts to do authentication for following users -->
-    <script>
-      window.addEvent = function (el, event, fn) {
+      // Cross-browser function for attaching events to elements
+      var addEvent = function (el, event, fn) {
         if (el.addEventListener) {
           el.addEventListener(event, fn, false);
         } else if (el.attachEvent) {
@@ -285,14 +276,16 @@
         }
       };
 
-      window.preventDefault = function (fn) {
+      // Simple function to prevent default events
+      var preventDefault = function (fn) {
         return function (e) {
           e && e.preventDefault();
           return fn.apply(this, arguments);
         };
       };
 
-      window.followUser  = function () {
+      // Trigger follow/unfollow of a user
+      var followUser  = function () {
         var stBtn  = document.getElementById('st-btn'),
             userId = stBtn.getAttribute('data-user-id');
 
@@ -322,18 +315,59 @@
         });
       };
 
-      window.accessToken = function (accessToken) {
+      // Need an authentication feature that will tell me whether I'm authenticated
+      var authenticated = (function () {
+        var hasChecked      = false,
+            isAuthenticated = false,
+            callbacks       = [],
+            accessToken     = docCookies.getItem('accessToken'),
+            user;
+
+        if (accessToken) {
+          jsonpRequest('https://api.stocktwits.com/api/2/account/verify.json?access_token=' + encodeURIComponent(accessToken), function (data) {
+            user            = data.user;
+            hasChecked      = true;
+            isAuthenticated = (data.response && data.response.status && ~~(data.response.status / 100) === 2);
+            for (var i = 0, l = callbacks.length; i < l; i++) {
+              callbacks.pop()(isAuthenticated, user);
+            }
+          });
+        } else {
+          hasChecked = true;
+        }
+
+        return function (cb) {
+          if (typeof cb === 'function') {
+            callbacks.push(cb);
+
+            if (hasChecked) {
+              return cb(isAuthenticated, user);
+            }
+          } else {
+            hasChecked      = true;
+            isAuthenticated = !!cb;
+          }
+        };
+      })();
+
+      authenticated(function (isAuthenticated, user) {
+        isAuthenticated || docCookies.removeItem('accessToken');
+      });
+
+      // Global callback for the auth route
+      var accessToken = function (accessToken) {
         var date = new Date();
         date.setFullYear(date.getFullYear() + 1); // One year into the future
         docCookies.setItem('accessToken', accessToken, date, '/');
 
+        // Set the token to be authenticated
+        authenticated(accessToken);
+
         // If this is happening, it is probably because we want to follow the user
         params.follow && window.followUser();
       };
-    </script>
 
-    <!-- Inline script tags to minimise HTTP requests -->
-    <script>
+      // Attach all the event handlers and create the buttons contents
       (function () {
         var stBtn      = document.getElementById('st-btn'),
             stTxt      = document.getElementById('st-text'),
@@ -341,8 +375,7 @@
             stCountVal = document.getElementById('st-count-val'),
             innerText  = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
 
-        var text        = [],
-            accessToken = docCookies.getItem('accessToken'),
+        var text = [],
             clickHandler,
             regularClickHandler;
 
@@ -355,12 +388,15 @@
 
         if (params.follow) {
           stTxt[innerText] = 'Follow' + (params['show-user'] ? ' @' + params.follow : '');
-          stBtn.href = AUTH_URL;
+          stBtn.href   = '/auth/index.html';
           clickHandler = function () {
-            if (docCookies.hasItem('accessToken')) {
-              return window.followUser();
-            }
-            regularClickHandler.call(this);
+            var that = this;
+            authenticated(function (isAuthenticated, user) {
+              if (isAuthenticated) {
+                return window.followUser();
+              }
+              regularClickHandler.call(that);
+            });
           };
         } else {
           if (params.mention) {
@@ -379,6 +415,7 @@
             if (params.count) {
               var countUrl = 'http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=',
                   pageUrl  = encodeURIComponent(params.pageUrl);
+              // Storing the page view counts in cookies for an hour
               if (!docCookies.getItem(pageUrl)) {
                 jsonpRequest(countUrl + pageUrl, function (data) {
                   var count = data.totals.shares;
