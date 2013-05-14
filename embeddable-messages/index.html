@@ -239,10 +239,28 @@
       };
     </script>
     <script>
-
-    var clickLike  = document.getElementById('embedded_st-like-action'),
+    var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent',
+        clickLike  = document.getElementById('embedded_st-like-action'),
         clickShare = document.getElementById('embedded_st-share-action'),
-        clickReply = document.getElementById('embedded_st-reply-action');
+        clickReply = document.getElementById('embedded_st-reply-action'),
+        clientID;
+
+    var getClientID = function(messageId) {        
+      var accessToken = docCookies.getItem('accessToken');
+      jsonpRequest("https://api.stocktwits.com/api/2/account/verify.json?access_token=" + encodeURIComponent(accessToken), function(messageInfo) {
+        if(messageInfo.response.status > 199 && messageInfo.response.status < 300 ) {
+          clientID = messageInfo.user.id;
+          jsonpRequest('https://api.stocktwits.com/api/2/messages/show/' + messageId + '.json?liked_by=' + clientID, function (messageInfo) {
+            if(messageInfo.liked_by.liked === true) {
+              clickLike[innerText] = "Unlike";
+            }
+          });
+        }
+        else {
+          clientID = undefined;
+        }
+      });
+    };
 
     (function () {
       var require = function (src) {
@@ -277,7 +295,6 @@
       };
 
       var showTwit = function (messageId) {
-        var innerText = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
         var frame = document.createElement("iframe");
         jsonpRequest("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function (messageInfo) {
           document.getElementById('embedded_st-username')[innerText] = messageInfo.message.user.username;
@@ -317,6 +334,9 @@
           clickReply.href = clickReply.href + '?body=' + encodeURIComponent('@' + messageInfo.message.user.username) + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
           clickShare.href = clickShare.href + '?body=' + encodeURIComponent('"@' + messageInfo.message.user.username + ' ' + messageInfo.message.body + '"') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
         });
+
+        getClientID(messageId);
+        
       };
 
       showTwit(getParameterByName('messageID'));
@@ -331,7 +351,6 @@
           crossDomainRequest('https://api.stocktwits.com/api/2/messages/like.json?access_token=' + encodeURIComponent(accessToken) + '&id=' + encodeURIComponent(params.messageID));
           clickLike[innerText] = 'Unlike';
         } else {
-          crossDomainRequest('https://api.stocktwits.com/api/2/messages/unlike.json?access_token=' + encodeURIComponent(accessToken) + '&id=' + encodeURIComponent(params.messageID));
           clickLike[innerText] = 'Like';
         }
       };
@@ -340,7 +359,7 @@
         var date = new Date();
         date.setFullYear(date.getFullYear() + 1); // One year into the future
         docCookies.setItem('accessToken', accessToken, date, '/');
-
+        getClientID(messageId);
         window.likeMessage();
       };
     </script>
