@@ -293,7 +293,7 @@
 
               link.href    = chart.url;
               link.target  = '_blank';
-              image.onload = window.resizeWindow;
+              // image.onload = window.resizeWindow;
               image.src    = chart.thumb;
 
               link.appendChild(image);
@@ -309,7 +309,7 @@
           image.height = '50';
           image.src    = messageInfo.message.user.avatar_url;
           document.getElementById('embedded_st-avatar').appendChild(image);
-          window.resizeWindow(); // Trigger a manual window resize event
+          // window.resizeWindow(); // Trigger a manual window resize event
 
           clickReply.href = clickReply.href + '?body=' + encodeURIComponent('@' + messageInfo.message.user.username) + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
           clickShare.href = clickShare.href + '?body=' + encodeURIComponent('"@' + messageInfo.message.user.username + ' ' + messageInfo.message.body + '"') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
