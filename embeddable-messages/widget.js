@@ -29,7 +29,7 @@
     var messageId = parseInt(element.getAttribute('data-id'), 10);
 
     new easyXDM.Socket({
-      remote: 'embeddable-messages/index.html?messageID=' + messageId,
+      remote: 'http://hackreactor.github.io/stocktwits-widgets/embeddable-messages/index.html?messageID=' + messageId,
       container: element,
       onMessage: function (height) {
         iframe.height = height;
