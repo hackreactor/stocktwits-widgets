@@ -294,7 +294,7 @@
       };
 
       var displayDate = function (timeMade) {
-        var date   = Date.parse(timeMade),
+        var date   = new Date(Date.parse(timeMade)),
             amOrPm = date.getHours() > 11 ? 'PM' : 'AM',
             hours  = date.getHours();
 
