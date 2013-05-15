@@ -253,15 +253,11 @@
         var name   = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
             script = document.createElement('script');
 
-        var endCallback = function () {
-          clearTimeout(timeout);
+        window[name] = function (data) {
+          cb(data);
           delete window[name];
         };
 
-        window[name] = function (data) {
-          cb(data);
-          endCallback();
-        };
         script.src = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
         document.body.removeChild(document.body.appendChild(script));
       };
