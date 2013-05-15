@@ -45,7 +45,7 @@
     query.pageUrl   = window.location.href;
     query.pageTitle = document.title;
 
-    iframe.src       = '/buttons/index.html?' + generateQueryString(query);
+    iframe.src       = 'http://hackreactor.github.io/stocktwits-widgets/buttons/index.html?' + generateQueryString(query);
     iframe.scrolling = 0;
     iframe.width     = 180;
     iframe.height    = 20;
