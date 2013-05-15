@@ -55,6 +55,7 @@
     iframe.width              = '500';
     iframe.height             = '140';
     iframe.setAttribute('scrolling',         'no');
+    iframe.setAttribute('border',            '0');
     iframe.setAttribute('frameborder',       '0');
     iframe.setAttribute('allowtransparency', 'true');
 
