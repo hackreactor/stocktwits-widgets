@@ -29,6 +29,7 @@
     var messageId = parseInt(element.getAttribute('data-id'), 10);
 
     new easyXDM.Socket({
+      swf:    'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf',
       remote: 'http://hackreactor.github.io/stocktwits-widgets/embeddable-messages/index.html?messageID=' + messageId,
       container: element,
       onMessage: function (height) {

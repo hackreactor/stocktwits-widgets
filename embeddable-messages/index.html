@@ -211,7 +211,9 @@
 
     <script>
     (function () {
-      var socket = new easyXDM.Socket({});
+      var socket = new easyXDM.Socket({
+        swf: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf'
+      });
 
       window.resizeWindow = window.onresize = function () {
         socket.postMessage(document.body.clientHeight);
