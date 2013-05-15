@@ -52,7 +52,7 @@
     iframe.setAttribute('frameborder',       0);
     iframe.setAttribute('allowtransparency', 'true');
 
-    element.parentNode.removeChild(element).createElement(iframe);
+    element.parentNode.removeChild(element).appendChild(iframe);
   };
 
   var elements = getElementsByClassName('stocktwits-share-button');
