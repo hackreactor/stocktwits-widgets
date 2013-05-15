@@ -222,18 +222,13 @@
     <script>
       var jsonpRequest = function (url, cb) {
         var name    = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
-            script  = document.createElement('script'),
-            timeout = setTimeout(endCallback, 5000); // Assume the page failed loading
-
-        var endCallback = function () {
-          clearTimeout(timeout);
-          delete window[name];
-        };
+            script  = document.createElement('script');
 
         window[name] = function (data) {
           cb(data);
-          endCallback();
+          delete window[name];
         };
+
         script.src = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
         document.body.appendChild(script);
       };
