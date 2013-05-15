@@ -250,9 +250,8 @@
 
       // Create a JSONP request to grab data cross-domain
       var jsonpRequest = function (url, cb) {
-        var name    = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
-            script  = document.createElement('script'),
-            timeout = setTimeout(endCallback, 5000); // Assume the page failed loading
+        var name   = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
+            script = document.createElement('script');
 
         var endCallback = function () {
           clearTimeout(timeout);

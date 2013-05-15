@@ -43,7 +43,6 @@
     // up the dom and apply styling
     var iframe = element.getElementsByTagName('iframe')[0];
 
-    iframe.scrolling          = 'no';
     iframe.style.display      = 'block';
     iframe.style.border       = '1px solid';
     iframe.style.borderColor  = '#eee #ddd #bbb';
@@ -54,7 +53,8 @@
     iframe.style.boxShadow    = 'rgba(0, 0, 0, 0.15) 0px 1px 3px';
     iframe.width              = '500';
     iframe.height             = '140';
-    iframe.setAttribute('frameborder',       0);
+    iframe.setAttribute('scrolling',         'no');
+    iframe.setAttribute('frameborder',       '0');
     iframe.setAttribute('allowtransparency', 'true');
 
     element.parentNode.replaceChild(iframe, element);
