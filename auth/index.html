@@ -7,6 +7,7 @@
             accessToken      = ~accessTokenIndex && window.location.hash.substr(accessTokenIndex + 13);
 
         if (accessToken) {
+          alert(accessToken);
           // Window opener needs to have a function that can receive the access token update
           window.opener.accessToken(accessToken);
           window.close();
