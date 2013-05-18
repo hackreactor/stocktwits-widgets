@@ -120,11 +120,11 @@
         line-height: 0;
         border: 4px transparent solid;
         border-left: 0;
-        border-right-color: #AAA;
-        zoom: 1;
+        border-right-color: #aaa;
       }
       .st-count u {
         margin: -2px 0 0 -2px;
+        z-index: 2;
         border-width: 2px;
         border-right-color: white;
       }
@@ -410,15 +410,32 @@
             if (params.count) {
               var countUrl = 'http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=',
                   pageUrl  = encodeURIComponent(params.pageUrl);
+              // Set the value of the count field
+              var setViewCount = function (count) {
+                count = +count; // Turn into a number
+
+                if (count > 999999) {
+                  count = '100K+';
+                } else if (count > 999) {
+                  count = ('' + count).slice(0, -3) + 'K+';
+                } else {
+                  count = ('' + count);
+                }
+
+                alert(count);
+                alert(typeof count);
+
+                stCountVal[innerText] = count;
+              };
               // Storing the page view counts in cookies for an hour
               if (!docCookies.getItem(pageUrl)) {
                 jsonpRequest(countUrl + pageUrl, function (data) {
                   var count = data.totals.shares;
-                  stCountVal[innerText] = count;
+                  setViewCount(count);
                   docCookies.setItem(pageUrl, count, 60*60);
                 });
               } else {
-                stCountVal[innerText] = docCookies.getItem(pageUrl);
+                setViewCount(docCookies.getItem(pageUrl));
               }
               stCount.style.display = 'inline-block';
             }
