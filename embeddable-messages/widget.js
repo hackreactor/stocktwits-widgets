@@ -26,7 +26,8 @@
   }
 
   var createMessage = function (element) {
-    var messageId = parseInt(element.getAttribute('data-id'), 10);
+    var messageId = parseInt(element.getAttribute('data-id'), 10),
+        iframe;
 
     new easyXDM.Socket({
       swf: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf',
@@ -52,10 +53,10 @@
         allowtransparency: 'true'
       },
       onMessage: function (height) {
-        this.container.height = height;
+        iframe.height = height;
       },
       onReady: function () {
-        var iframe = this.container = this.container.getElementsByTagName('iframe')[0];
+        iframe = this.container.getElementsByTagName('iframe')[0];
 
         element.parentNode.replaceChild(iframe, element);
       }
