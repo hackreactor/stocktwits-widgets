@@ -278,7 +278,7 @@
       };
 
       // Trigger follow/unfollow of a user
-      var followUser  = function () {
+      var followUser = function () {
         var stBtn  = document.getElementById('st-btn'),
             userId = stBtn.getAttribute('data-user-id');
 
@@ -351,7 +351,9 @@
       var accessToken = function (accessToken) {
         var date = new Date();
         date.setFullYear(date.getFullYear() + 1); // One year into the future
-        docCookies.setItem('accessToken', accessToken, date, '/');
+        docCookies.setItem('accessToken', accessToken, date);
+
+        alert(accessToken);
 
         // Set the token to be authenticated
         authenticated(accessToken);
