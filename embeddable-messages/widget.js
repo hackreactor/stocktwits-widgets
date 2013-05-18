@@ -26,38 +26,40 @@
   }
 
   var createMessage = function (element) {
-    var messageId = parseInt(element.getAttribute('data-id'), 10),
-        iframe;
+    var messageId = parseInt(element.getAttribute('data-id'), 10);
 
     new easyXDM.Socket({
-      swf:    'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf',
+      swf: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf',
+      remoteHelper: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/name.html',
       remote: 'http://hackreactor.github.io/stocktwits-widgets/embeddable-messages/index.html?messageID=' + messageId,
       container: element,
+      props: {
+        width:  500,
+        height: 140,
+        style: {
+          display:      'block',
+          border:       '1px solid',
+          borderColor:  '#eee #ddd #bbb',
+          maxWidth:     '99%',
+          minWidth:     '220px',
+          borderRadius: '5px',
+          margin:       '10px',
+          boxShadow:    'rgba(0, 0, 0, 0.15) 0px 1px 3px'
+        },
+        border: '0',
+        scrolling: 'no',
+        frameborder: '0',
+        allowtransparency: 'true'
+      },
       onMessage: function (height) {
-        iframe.height = height;
+        this.container.height = height;
+      },
+      onReady: function () {
+        var iframe = this.container = this.container.getElementsByTagName('iframe')[0];
+
+        element.parentNode.replaceChild(iframe, element);
       }
     });
-
-    // This is kind of messed up, but we basically promote the easyXDM iframe
-    // up the dom and apply styling
-    iframe = element.getElementsByTagName('iframe')[0];
-
-    iframe.style.display      = 'block';
-    iframe.style.border       = '1px solid';
-    iframe.style.borderColor  = '#eee #ddd #bbb';
-    iframe.style.maxWidth     = '99%';
-    iframe.style.minWidth     = '220px';
-    iframe.style.borderRadius = '5px';
-    iframe.style.margin       = '10px';
-    iframe.style.boxShadow    = 'rgba(0, 0, 0, 0.15) 0px 1px 3px';
-    iframe.width              = '500';
-    iframe.height             = '140';
-    iframe.setAttribute('scrolling',         'no');
-    iframe.setAttribute('border',            '0');
-    iframe.setAttribute('frameborder',       '0');
-    iframe.setAttribute('allowtransparency', 'true');
-
-    element.parentNode.replaceChild(iframe, element);
   };
 
   var elements = getElementsByClassName('stocktwit-twit');
