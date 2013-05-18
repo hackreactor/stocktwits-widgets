@@ -37,11 +37,11 @@
         iframe.height = height;
       },
       onReady: function () {
-        this.container = iframe; // This is kind of screwed up
-
         // This is kind of messed up, but we basically promote the easyXDM iframe
         // up the dom and apply styling
         iframe = element.getElementsByTagName('iframe')[0];
+
+        this.container = iframe; // This is kind of screwed up
 
         iframe.style              = {};
         iframe.style.display      = 'block';
