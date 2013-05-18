@@ -50,7 +50,7 @@
         },
         border: '0',
         scrolling: 'no',
-        frameborder: '0',
+        frameBorder: '0',
         allowtransparency: 'true'
       },
       onMessage: function (height) {

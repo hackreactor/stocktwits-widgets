@@ -50,8 +50,8 @@
     iframe.style.height = '20px';
     iframe.style.border = '0';
     iframe.setAttribute('src', 'http://hackreactor.github.io/stocktwits-widgets/buttons/index.html?' + generateQueryString(query));
-    iframe.setAttribute('border', '0');
-    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('border',            '0');
+    iframe.setAttribute('frameBorder',       '0');
     iframe.setAttribute('allowtransparency', 'true');
 
     element.parentNode.replaceChild(iframe, element);
