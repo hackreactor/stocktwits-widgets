@@ -32,15 +32,16 @@
     new easyXDM.Socket({
       swf:    'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf',
       remote: 'http://hackreactor.github.io/stocktwits-widgets/embeddable-messages/index.html?messageID=' + messageId,
-      container: element.parentNode,
+      container: element,
       onMessage: function (height) {
         iframe.height = height;
       },
       onReady: function () {
-        element.parentNode.removeChild(element);
         // This is kind of messed up, but we basically promote the easyXDM iframe
         // up the dom and apply styling
-        iframe = this.container.getElementsByTagName('iframe')[0];
+        iframe = element.getElementsByTagName('iframe')[0];
+
+        this.container = iframe; // This is kind of screwed up
 
         iframe.style              = {};
         iframe.style.display      = 'block';
@@ -57,10 +58,10 @@
         iframe.setAttribute('border',            '0');
         iframe.setAttribute('frameborder',       '0');
         iframe.setAttribute('allowtransparency', 'true');
+
+        element.parentNode.replaceChild(iframe, element);
       }
     });
-
-
   };
 
   var elements = getElementsByClassName('stocktwit-twit');
