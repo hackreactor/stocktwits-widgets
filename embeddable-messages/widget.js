@@ -26,7 +26,8 @@
   }
 
   var createMessage = function (element) {
-    var messageId = parseInt(element.getAttribute('data-id'), 10),
+    var messageId   = parseInt(element.getAttribute('data-id'), 10),
+        caughtError = false,
         iframe;
 
     new easyXDM.Socket({
@@ -54,11 +55,22 @@
       },
       onMessage: function (height) {
         iframe.height = height;
+      },
+      onReady: function () {
+        // IE8 seems to work if I grab the iframe from onReady
+        if (!caughtError) { return; }
+
+        iframe = this.container.getElementsByTagName('iframe')[0];
+        element.parentNode.replaceChild(iframe, element);
       }
     });
 
-    iframe = element.getElementsByTagName('iframe')[0];
-    element.parentNode.replaceChild(iframe, element);
+    try {
+      iframe = element.getElementsByTagName('iframe')[0];
+      element.parentNode.replaceChild(iframe, element);
+    } catch (e) {
+      caughtError = true;
+    }
   };
 
   var elements = getElementsByClassName('stocktwit-twit');
