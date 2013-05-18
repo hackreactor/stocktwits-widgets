@@ -44,6 +44,7 @@
     // up the dom and apply styling
     var iframe = element.getElementsByTagName('iframe')[0];
 
+    iframe.style              = {};
     iframe.style.display      = 'block';
     iframe.style.border       = '1px solid';
     iframe.style.borderColor  = '#eee #ddd #bbb';
