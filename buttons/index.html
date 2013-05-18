@@ -426,6 +426,7 @@
                 alert(typeof count);
 
                 stCountVal[innerText] = count;
+                stCount.style.display = 'inline-block';
               };
               // Storing the page view counts in cookies for an hour
               if (!docCookies.getItem(pageUrl)) {
@@ -437,7 +438,6 @@
               } else {
                 setViewCount(docCookies.getItem(pageUrl));
               }
-              stCount.style.display = 'inline-block';
             }
           }
           // Append to the link
