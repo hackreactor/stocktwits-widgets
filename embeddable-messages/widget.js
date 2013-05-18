@@ -26,7 +26,8 @@
   }
 
   var createMessage = function (element) {
-    var messageId = parseInt(element.getAttribute('data-id'), 10);
+    var messageId = parseInt(element.getAttribute('data-id'), 10),
+        iframe;
 
     new easyXDM.Socket({
       swf:    'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf',
@@ -34,15 +35,12 @@
       container: element,
       onMessage: function (height) {
         iframe.height = height;
-      },
-      onReady: function () {
-        this.container = iframe; // This is kind of screwed up
       }
     });
 
     // This is kind of messed up, but we basically promote the easyXDM iframe
     // up the dom and apply styling
-    var iframe = element.getElementsByTagName('iframe')[0];
+    iframe = element.getElementsByTagName('iframe')[0];
 
     iframe.style.display      = 'block';
     iframe.style.border       = '1px solid';
