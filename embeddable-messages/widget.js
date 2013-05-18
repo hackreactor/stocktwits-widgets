@@ -54,13 +54,11 @@
       },
       onMessage: function (height) {
         iframe.height = height;
-      },
-      onReady: function () {
-        iframe = this.container.getElementsByTagName('iframe')[0];
-
-        element.parentNode.replaceChild(iframe, element);
       }
     });
+
+    iframe = element.getElementsByTagName('iframe')[0];
+    element.parentNode.replaceChild(iframe, element);
   };
 
   var elements = getElementsByClassName('stocktwit-twit');
