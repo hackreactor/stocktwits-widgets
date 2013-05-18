@@ -16,7 +16,8 @@
       }
       .st-btn,
       .st-icon,
-      .st-text {
+      .st-text,
+      .st-count {
         float: left;
         text-decoration: none;
       }
@@ -89,20 +90,16 @@
         line-height: 18px;
       }
       .st-count {
-        position: relative;
-        *display: inline;
         display: none;
         height: 18px;
         max-width: 100%;
         margin-left: 5px;
-        border-image: initial;
         background: white;
-        border: #BBB solid 1px;
+        border: 1px solid #bbb;
         -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
         border-radius: 3px;
-        zoom: 1;
-        font: normal normal normal 11px/1.7 "Helvetica Neue", Arial, sans-serif;
+        font-size: 12px;
+        line-height: 18px;
         color: #333;
         white-space: nowrap;
         text-decoration: none;
@@ -412,8 +409,6 @@
                   pageUrl  = encodeURIComponent(params.pageUrl);
               // Set the value of the count field
               var setViewCount = function (count) {
-                count = +count; // Turn into a number
-
                 if (count > 999999) {
                   count = '100K+';
                 } else if (count > 999) {
@@ -421,9 +416,6 @@
                 } else {
                   count = ('' + count);
                 }
-
-                alert(count);
-                alert(typeof count);
 
                 stCountVal[innerText] = count;
                 stCount.style.display = 'inline-block';
@@ -436,7 +428,7 @@
                   docCookies.setItem(pageUrl, count, 60*60);
                 });
               } else {
-                setViewCount(docCookies.getItem(pageUrl));
+                setViewCount(+docCookies.getItem(pageUrl));
               }
             }
           }
