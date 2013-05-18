@@ -45,14 +45,14 @@
     query.pageUrl   = window.location.href;
     query.pageTitle = document.title;
 
-    iframe.src       = '/buttons/index.html?' + generateQueryString(query);
+    iframe.src       = 'http://hackreactor.github.io/stocktwits-widgets/buttons/index.html?' + generateQueryString(query);
     iframe.scrolling = 0;
     iframe.width     = 180;
     iframe.height    = 20;
     iframe.setAttribute('frameborder',       0);
     iframe.setAttribute('allowtransparency', 'true');
 
-    element.parentNode.replaceChild(iframe, element);
+    element.parentNode.removeChild(element).createElement(iframe);
   };
 
   var elements = getElementsByClassName('stocktwits-share-button');
