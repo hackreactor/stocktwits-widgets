@@ -287,19 +287,18 @@
         clickReply = document.getElementById('embedded_st-reply-action'),
         clientID;
 
-    var getClientID = function(messageId) {        
+    var getClientID = function (messageId) {        
       var accessToken = docCookies.getItem('accessToken');
-      if(accessToken) {
+      if (accessToken) {
         jsonpRequest("https://api.stocktwits.com/api/2/account/verify.json?access_token=" + encodeURIComponent(accessToken), function(messageInfo) {
-          if(messageInfo.response.status > 199 && messageInfo.response.status < 300 ) {
+          if (messageInfo.response.status > 199 && messageInfo.response.status < 300 ) {
             clientID = messageInfo.user.id;
             jsonpRequest('https://api.stocktwits.com/api/2/messages/show/' + messageId + '.json?liked_by=' + clientID, function (messageInfo) {
-              if(messageInfo.liked_by.liked === true) {
+              if (messageInfo.liked_by.liked === true) {
                 clickLike[innerText] = "Unlike";
               }
             });
-          }
-          else {
+          } else {
             clientID = undefined;
           }
         });
@@ -333,7 +332,7 @@
         return months[date.getMonth()] + ' ' + date.getDate() + ' at ' + hours + ':' + date.getMinutes() + ' ' + amOrPm;
       };
 
-      var getParameterByName = function(name) {
+      var getParameterByName = function (name) {
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(location.search);
