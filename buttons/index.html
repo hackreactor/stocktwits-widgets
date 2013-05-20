@@ -349,9 +349,7 @@
 
       // Global callback for the auth route
       var accessToken = function (accessToken) {
-        var date = new Date();
-        date.setFullYear(date.getFullYear() + 1); // One year into the future
-        docCookies.setItem('accessToken', accessToken, date);
+        docCookies.setItem('accessToken', accessToken, 365 * 24 * 60 * 60, '/');
 
         // Set the token to be authenticated
         authenticated(accessToken);
@@ -426,7 +424,7 @@
                 jsonpRequest(countUrl + pageUrl, function (data) {
                   var count = data.totals.shares;
                   setViewCount(count);
-                  docCookies.setItem(pageUrl, count, 60*60);
+                  docCookies.setItem(pageUrl, count, 60*60, '/');
                 });
               } else {
                 setViewCount(+docCookies.getItem(pageUrl));
