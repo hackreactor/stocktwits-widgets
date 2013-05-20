@@ -16,13 +16,14 @@
       }
       .st-btn,
       .st-icon,
-      .st-text {
+      .st-text,
+      .st-count {
         float: left;
+        text-decoration: none;
       }
       .st-btn {
         height: 18px;
         max-width: 98%;
-
         background-color: #f8f8f8;
         background-image: -webkit-gradient(linear,left top,left bottom,from(#fff),to(#dedede));
         background-image: -moz-linear-gradient(top,#fff,#dedede);
@@ -71,7 +72,7 @@
         border: 1px solid #ccc;
       }
       .active .st-icon {
-        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
         filter: alpha(opacity=50);
         opacity: 0.5;
       }
@@ -89,20 +90,17 @@
         line-height: 18px;
       }
       .st-count {
-        position: relative;
-        *display: inline;
+        position: relative; /* Position the CSS arrow */
         display: none;
         height: 18px;
         max-width: 100%;
         margin-left: 5px;
-        border-image: initial;
         background: white;
-        border: #BBB solid 1px;
+        border: 1px solid #bbb;
         -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
         border-radius: 3px;
-        zoom: 1;
-        font: normal normal normal 11px/1.7 "Helvetica Neue", Arial, sans-serif;
+        font-size: 12px;
+        line-height: 18px;
         color: #333;
         white-space: nowrap;
         text-decoration: none;
@@ -120,11 +118,11 @@
         line-height: 0;
         border: 4px transparent solid;
         border-left: 0;
-        border-right-color: #AAA;
-        zoom: 1;
+        border-right-color: #aaa;
       }
       .st-count u {
         margin: -2px 0 0 -2px;
+        z-index: 2;
         border-width: 2px;
         border-right-color: white;
       }
@@ -250,19 +248,14 @@
 
       // Create a JSONP request to grab data cross-domain
       var jsonpRequest = function (url, cb) {
-        var name    = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
-            script  = document.createElement('script'),
-            timeout = setTimeout(endCallback, 5000); // Assume the page failed loading
-
-        var endCallback = function () {
-          clearTimeout(timeout);
-          delete window[name];
-        };
+        var name   = 'stockTwitsCallback' + ('' + Math.random()).substr(2),
+            script = document.createElement('script');
 
         window[name] = function (data) {
           cb(data);
-          endCallback();
+          delete window[name];
         };
+
         script.src = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
         document.body.removeChild(document.body.appendChild(script));
       };
@@ -279,13 +272,13 @@
       // Simple function to prevent default events
       var preventDefault = function (fn) {
         return function (e) {
-          e && e.preventDefault();
+          e && (e.preventDefault ? e.preventDefault() : e.returnValue = false);
           return fn.apply(this, arguments);
         };
       };
 
       // Trigger follow/unfollow of a user
-      var followUser  = function () {
+      var followUser = function () {
         var stBtn  = document.getElementById('st-btn'),
             userId = stBtn.getAttribute('data-user-id');
 
@@ -356,9 +349,7 @@
 
       // Global callback for the auth route
       var accessToken = function (accessToken) {
-        var date = new Date();
-        date.setFullYear(date.getFullYear() + 1); // One year into the future
-        docCookies.setItem('accessToken', accessToken, date, '/');
+        docCookies.setItem('accessToken', accessToken, 365 * 24 * 60 * 60, '/');
 
         // Set the token to be authenticated
         authenticated(accessToken);
@@ -415,17 +406,29 @@
             if (params.count) {
               var countUrl = 'http://api.awe.sm/stats/totals.json?v=3&key=9fa3ad563b8643e63d5f3014bee8be6aca5d06bfc53ac9b4d5b55978230caab8&original_url=',
                   pageUrl  = encodeURIComponent(params.pageUrl);
+              // Set the value of the count field
+              var setViewCount = function (count) {
+                if (count > 999999) {
+                  count = '100K+';
+                } else if (count > 999) {
+                  count = ('' + count).slice(0, -3) + 'K+';
+                } else {
+                  count = ('' + count);
+                }
+
+                stCountVal[innerText] = count;
+                stCount.style.display = 'inline-block';
+              };
               // Storing the page view counts in cookies for an hour
               if (!docCookies.getItem(pageUrl)) {
                 jsonpRequest(countUrl + pageUrl, function (data) {
                   var count = data.totals.shares;
-                  stCountVal[innerText] = count;
-                  docCookies.setItem(pageUrl, count, 60*60);
+                  setViewCount(count);
+                  docCookies.setItem(pageUrl, count, 60*60, '/');
                 });
               } else {
-                stCountVal[innerText] = docCookies.getItem(pageUrl);
+                setViewCount(+docCookies.getItem(pageUrl));
               }
-              stCount.style.display = 'inline-block';
             }
           }
           // Append to the link
