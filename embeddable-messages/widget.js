@@ -31,9 +31,9 @@
         iframe;
 
     new easyXDM.Socket({
-      swf: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf',
-      remoteHelper: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/name.html',
-      remote: 'http://hackreactor.github.io/stocktwits-widgets/embeddable-messages/index.html?messageID=' + messageId,
+      swf: 'http://localhost:8000/easyXDM/easyxdm.swf',
+      remoteHelper: 'http://localhost:8000/easyXDM/name.html',
+      remote: 'http://localhost:8000/embeddable-messages/index.html?messageID=' + messageId,
       container: element,
       props: {
         width:  500,

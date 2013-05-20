@@ -67,8 +67,8 @@
     <div id="embedded_st-avatar" class="embedded_st-avatar"></div>
     <div class="embedded_st-main-column">
       <div class="embedded_st-header">
-        <div id="embedded_st-dateline" class="embedded_st-dateline"></div>
-        <div id="embedded_st-username" class="embedded_st-username"></div>
+        <a id="embedded_st-dateline" class="embedded_st-dateline" target="_blank"></a>
+        <a id="embedded_st-username" class="embedded_st-username" target="_blank"></a>
       </div>
       <div class="embedded_st-entry-content">
         <div id="embedded_st-entry-title" class="embedded_st-entry-title"></div>
@@ -93,9 +93,7 @@
           <li>
             <div class="share-button">
               <!-- Follow button -->
-              <a href="http://stocktwits.com/blakeembrey" class="stocktwits-share-button" data-follow="blakeembrey">Follow</a>
-              <!-- Embeddable StockTwits buttons -->
-              <script>(function(d){var b=d.body,s=d.createElement('script');s.src='http://hackreactor.github.io/stocktwits-widgets/buttons/script.js';b.appendChild(s);})(document);</script>
+              <a href="http://stocktwits.com/" id="stocktwits-share-button" class="stocktwits-share-button">Follow</a>
             </div>
           </li>
         </ul>
@@ -117,7 +115,7 @@
     </script>
 
     <!-- Global domain URL -->
-    <script>var AUTH_URL = 'http://hackreactor.github.io/stocktwits-widgets/auth/index.html';</script>
+    <script>var AUTH_URL = 'http://localhost:8000/auth/index.html';</script>
 
     <!-- Do cross-domain requests (can't view a response though) -->
     <script>
@@ -251,12 +249,12 @@
       }(Date));
     </script>
 
-    <script src="http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyXDM.js"></script>
+    <script src="http://localhost:8000/easyXDM/easyXDM.js"></script>
 
     <script>
     (function () {
       var socket = new easyXDM.Socket({
-        swf: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf'
+        swf: 'http://localhost:8000/easyXDM/easyxdm.swf'
       });
 
       window.resizeWindow = window.onresize = function () {
@@ -285,6 +283,7 @@
         clickLike  = document.getElementById('embedded_st-like-action'),
         clickShare = document.getElementById('embedded_st-share-action'),
         clickReply = document.getElementById('embedded_st-reply-action'),
+        followBtn  = document.getElementById('stocktwits-share-button'),
         clientID;
 
     var getClientID = function (messageId) {        
@@ -342,8 +341,11 @@
       var showTwit = function (messageId) {
         var frame = document.createElement("iframe");
         jsonpRequest("https://api.stocktwits.com/api/2/messages/show/" + messageId + ".json", function (messageInfo) {
+
           document.getElementById('embedded_st-username')[innerText] = messageInfo.message.user.username;
+          document.getElementById('embedded_st-username').setAttribute('href', "http://stocktwits.com/" + messageInfo.message.user.username);
           document.getElementById('embedded_st-dateline')[innerText] = displayDate(messageInfo.message.created_at);
+          document.getElementById('embedded_st-dateline').setAttribute('href', "http://stocktwits.com/" + messageInfo.message.user.username + '/message/' + messageInfo.message.id);
           var symbols = messageInfo.message.symbols;
           var messageBody =  messageInfo.message.body;
           for(var i = 0; i < symbols.length; i++) {
@@ -376,8 +378,15 @@
           document.getElementById('embedded_st-avatar').appendChild(image);
           window.resizeWindow(); // Trigger a manual window resize event
 
-          clickReply.href = clickReply.href + '?body=' + encodeURIComponent('@' + messageInfo.message.user.username) + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
-          clickShare.href = clickShare.href + '?body=' + encodeURIComponent('"@' + messageInfo.message.user.username + ' ' + messageInfo.message.body + '"') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
+          var newDiv = document.createElement('div');
+          newDiv.innerHTML = messageInfo.message.body;
+
+          clickReply.href = clickReply.href + '?body=' + encodeURIComponent('@' + messageInfo.message.user.username + ' ') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
+          clickShare.href = clickShare.href + '?body=' + encodeURIComponent('"@' + messageInfo.message.user.username + ' ' + newDiv[innerText] + '" ') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
+          followBtn.href += messageInfo.message.user.username;
+          followBtn.setAttribute('data-follow', messageInfo.message.user.username);
+
+          (function(d){var b=d.body,s=d.createElement('script');s.src='http://localhost:8000/buttons/script.js';b.appendChild(s);})(document);
         });
 
         getClientID(messageId);

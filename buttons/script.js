@@ -49,7 +49,7 @@
     iframe.style.width  = '180px';
     iframe.style.height = '20px';
     iframe.style.border = '0';
-    iframe.setAttribute('src', 'http://hackreactor.github.io/stocktwits-widgets/buttons/index.html?' + generateQueryString(query));
+    iframe.setAttribute('src', 'http://localhost:8000/buttons/index.html?' + generateQueryString(query));
     iframe.setAttribute('border',            '0');
     iframe.setAttribute('frameBorder',       '0');
     iframe.setAttribute('allowtransparency', 'true');
