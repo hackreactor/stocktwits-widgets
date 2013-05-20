@@ -115,7 +115,7 @@
     </script>
 
     <!-- Global domain URL -->
-    <script>var AUTH_URL = 'http://localhost:8000/auth/index.html';</script>
+    <script>var AUTH_URL = 'http://hackreactor.github.io/stocktwits-widgets/auth/index.html';</script>
 
     <!-- Do cross-domain requests (can't view a response though) -->
     <script>
@@ -249,12 +249,12 @@
       }(Date));
     </script>
 
-    <script src="http://localhost:8000/easyXDM/easyXDM.js"></script>
+    <script src="http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyXDM.js"></script>
 
     <script>
     (function () {
       var socket = new easyXDM.Socket({
-        swf: 'http://localhost:8000/easyXDM/easyxdm.swf'
+        swf: 'http://hackreactor.github.io/stocktwits-widgets/easyXDM/easyxdm.swf'
       });
 
       window.resizeWindow = window.onresize = function () {
@@ -386,7 +386,7 @@
           followBtn.href += messageInfo.message.user.username;
           followBtn.setAttribute('data-follow', messageInfo.message.user.username);
 
-          (function(d){var b=d.body,s=d.createElement('script');s.src='http://localhost:8000/buttons/script.js';b.appendChild(s);})(document);
+          (function(d){var b=d.body,s=d.createElement('script');s.src='http://hackreactor.github.io/stocktwits-widgets/buttons/script.js';b.appendChild(s);})(document);
         });
 
         getClientID(messageId);
