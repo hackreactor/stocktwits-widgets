@@ -395,7 +395,10 @@
                 args = arguments;
             authenticated(function (isAuthenticated, user) {
               if (isAuthenticated) {
-                return window.followUser();
+                if (!stBtn.getAttribute('data-following')) {
+                  return window.followUser();
+                }
+                stBtn.href = 'http://stocktwits.com/' + encodeURI(params.follow);
               }
               regularClickHandler.call(that, args);
             });
