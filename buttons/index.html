@@ -254,18 +254,27 @@
         window[name] = function (data) {
           cb(data);
           delete window[name];
+          document.body.removeChild(script);
         };
 
-        script.src = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
-        document.body.removeChild(document.body.appendChild(script));
+        script.src   = url + (~url.indexOf('?') ? '&' : '?') + 'callback=' + name;
+        script.type  = 'text/javascript';
+        script.async = true;
+
+        document.body.appendChild(script);
       };
 
       // Cross-browser function for attaching events to elements
       var addEvent = function (el, event, fn) {
+        // IE has an issue with getting the element that triggered the event
+        var cb = function () {
+          return fn.apply(el, arguments);
+        };
+
         if (el.addEventListener) {
-          el.addEventListener(event, fn, false);
+          el.addEventListener(event, cb, false);
         } else if (el.attachEvent) {
-          el.attachEvent('on' + event, fn);
+          el.attachEvent('on' + event, cb);
         }
       };
 
@@ -374,19 +383,21 @@
           var width  = 500,
               height = 350,
               left   = (window.screen.availWidth - width) / 2;
-          window.open(this.href, '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
+
+          window.open(this.getAttribute('href'), '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
         };
 
         if (params.follow) {
           stTxt[innerText] = 'Follow' + (params['show-user'] ? ' @' + params.follow : '');
-          stBtn.href   = 'http://hackreactor.github.io/stocktwits-widgets/auth/index.html';
+          stBtn.href = stCount.href = 'http://hackreactor.github.io/stocktwits-widgets/auth/index.html';
           clickHandler = function () {
-            var that = this;
+            var that = this,
+                args = arguments;
             authenticated(function (isAuthenticated, user) {
               if (isAuthenticated) {
                 return window.followUser();
               }
-              regularClickHandler.call(that);
+              regularClickHandler.call(that, args);
             });
           };
         } else {
@@ -432,7 +443,7 @@
             }
           }
           // Append to the link
-          stBtn.href += '?body=' + encodeURIComponent(text.join(' '));
+          stBtn.href = stCount.href += '?body=' + encodeURIComponent(text.join(' '));
         }
 
         // Make a new window open over the top of the current window
