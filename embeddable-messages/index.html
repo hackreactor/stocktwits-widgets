@@ -400,7 +400,7 @@
 
         var preventDefault = function (fn) {
           return function (e) {
-            e.preventDefault();
+            e && (e.preventDefault ? e.preventDefault() : e.returnValue = false);
             return fn.apply(this, arguments);
           };
         };
