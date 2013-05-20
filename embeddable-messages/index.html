@@ -289,19 +289,21 @@
 
     var getClientID = function(messageId) {        
       var accessToken = docCookies.getItem('accessToken');
-      jsonpRequest("https://api.stocktwits.com/api/2/account/verify.json?access_token=" + encodeURIComponent(accessToken), function(messageInfo) {
-        if(messageInfo.response.status > 199 && messageInfo.response.status < 300 ) {
-          clientID = messageInfo.user.id;
-          jsonpRequest('https://api.stocktwits.com/api/2/messages/show/' + messageId + '.json?liked_by=' + clientID, function (messageInfo) {
-            if(messageInfo.liked_by.liked === true) {
-              clickLike[innerText] = "Unlike";
-            }
-          });
-        }
-        else {
-          clientID = undefined;
-        }
-      });
+      if(accessToken) {
+        jsonpRequest("https://api.stocktwits.com/api/2/account/verify.json?access_token=" + encodeURIComponent(accessToken), function(messageInfo) {
+          if(messageInfo.response.status > 199 && messageInfo.response.status < 300 ) {
+            clientID = messageInfo.user.id;
+            jsonpRequest('https://api.stocktwits.com/api/2/messages/show/' + messageId + '.json?liked_by=' + clientID, function (messageInfo) {
+              if(messageInfo.liked_by.liked === true) {
+                clickLike[innerText] = "Unlike";
+              }
+            });
+          }
+          else {
+            clientID = undefined;
+          }
+        });
+      }
     };
 
     (function () {
@@ -395,6 +397,7 @@
           crossDomainRequest('https://api.stocktwits.com/api/2/messages/like.json?access_token=' + encodeURIComponent(accessToken) + '&id=' + encodeURIComponent(params.messageID));
           clickLike[innerText] = 'Unlike';
         } else {
+          crossDomainRequest('https://api.stocktwits.com/api/2/messages/unlike.json?access_token=' + encodeURIComponent(accessToken) + '&id=' + encodeURIComponent(params.messageID));
           clickLike[innerText] = 'Like';
         }
       };
@@ -404,7 +407,6 @@
         date.setFullYear(date.getFullYear() + 1); // One year into the future
         docCookies.setItem('accessToken', accessToken, date, '/');
         getClientID(messageId);
-        window.likeMessage();
       };
     </script>
     <!-- Inline script tags to minimise HTTP requests -->
