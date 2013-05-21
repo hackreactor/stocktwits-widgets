@@ -404,7 +404,7 @@
                 if (!stBtn.getAttribute('data-following')) {
                   return window.followUser();
                 }
-                stBtn.href = 'http://stocktwits.com/' + encodeURI(params.follow);
+                stBtn.href = stCount.href = 'http://stocktwits.com/' + encodeURI(params.follow);
               }
               regularClickHandler.call(that, args);
             });
