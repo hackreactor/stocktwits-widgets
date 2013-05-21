@@ -373,9 +373,9 @@
             stTxt      = document.getElementById('st-text'),
             stCount    = document.getElementById('st-count'),
             stCountVal = document.getElementById('st-count-val'),
-            innerText  = (document.getElementsByTagName('body')[0].innerText != null) ? 'innerText' : 'textContent';
-
-        var text = [],
+            innerText  = (document.body.innerText != null) ? 'innerText' : 'textContent',
+            text       = [],
+            unescapeHTML,
             clickHandler,
             regularClickHandler;
 
@@ -385,6 +385,12 @@
               left   = (window.screen.availWidth - width) / 2;
 
           window.open(this.getAttribute('href'), '', 'left=' + left + ',top=100,width=' + width + ',height=' + height);
+        };
+
+        unescapeHTML = function (html) {
+          var div       = document.createElement('div');
+          div.innerHTML = html;
+          return div[innerText];
         };
 
         if (params.follow) {
@@ -414,7 +420,7 @@
           }
           // If there is no text content, use the site
           if (!text.length) {
-            text.push(params.pageTitle);
+            text.push(unescapeHTML(params.pageTitle));
             text.push(params.pageUrl);
 
             if (params.count) {

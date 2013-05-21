@@ -287,7 +287,7 @@
         followBtn  = document.getElementById('stocktwits-share-button'),
         clientID;
 
-    var getClientID = function (messageId) {        
+    var getClientID = function (messageId) {
       var accessToken = docCookies.getItem('accessToken');
       if (accessToken) {
         jsonpRequest("https://api.stocktwits.com/api/2/account/verify.json?access_token=" + encodeURIComponent(accessToken), function(messageInfo) {
@@ -391,7 +391,6 @@
         });
 
         getClientID(messageId);
-        
       };
 
       showTwit(getParameterByName('messageID'));
