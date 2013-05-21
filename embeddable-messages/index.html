@@ -382,8 +382,8 @@
           var newDiv = document.createElement('div');
           newDiv.innerHTML = messageInfo.message.body;
 
-          clickReply.href = clickReply.href + '?body=' + encodeURIComponent('@' + messageInfo.message.user.username + ' ') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
-          clickShare.href = clickShare.href + '?body=' + encodeURIComponent('"@' + messageInfo.message.user.username + ' ' + newDiv[innerText] + '" ') + '&in_reply_to_message_id=' + encodeURIComponent(messageId);
+          clickReply.href = clickReply.href + '?body=' + encodeURIComponent('@' + messageInfo.message.user.username + ' ') + '&reply=' + encodeURIComponent(messageId);
+          clickShare.href = clickShare.href + '?body=' + encodeURIComponent('"@' + messageInfo.message.user.username + ' ' + newDiv[innerText] + '" ') + '&reply=' + encodeURIComponent(messageId);
           followBtn.href += messageInfo.message.user.username;
           followBtn.setAttribute('data-follow', messageInfo.message.user.username);
 
