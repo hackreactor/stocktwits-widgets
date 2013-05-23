@@ -45,7 +45,8 @@
           maxWidth:     '99%',
           minWidth:     '220px',
           borderRadius: '5px',
-          margin:       '10px',
+          padding:      '0',
+          margin:       '10px 0',
           boxShadow:    'rgba(0, 0, 0, 0.15) 0px 1px 3px'
         },
         border: '0',
