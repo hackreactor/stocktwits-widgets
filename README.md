@@ -1,9 +1,9 @@
-# StockTwits Widgets
+# StockTwits Widgets Proposed for Implementation
 
 ## Overview
 
 StockTwits contracted Alex Paley, Blake Embrey, Selby Walker, and
-Andrew Ha to implement Share, Follow, Mention, and Message buttons as well
+Andrew Ha to propose implementation Share, Follow, Mention, and Message buttons as well
 as embeddable messages.
 
 Embeddable messages were designed to allow bloggers and members of the
@@ -27,4 +27,4 @@ content more interactive and more deeply integrated with StockTwits.
 5. **Cross-Domain Post Requests in IE7**: In order to support IE7, we POST to an
    iFrame in order to do cross-domain POST requests without the use of CORS.
 
-Feel free to check out the final product [here](http://hackreactor.github.io/stocktwits-widgets)
+Feel free to check out our proposed implementation [here](http://hackreactor.github.io/stocktwits-widgets).
